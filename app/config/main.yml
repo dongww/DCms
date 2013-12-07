@@ -1,0 +1,12 @@
+#主配置文件
+
+#是否调试模式
+debug: true
+
+#数据库配置
+db:
+    dsn: 'mysql:host=127.0.0.1;dbname=silex_cms'
+    user: root
+    password: ~
+
+test: [你好, 不好]

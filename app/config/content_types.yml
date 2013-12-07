@@ -1,0 +1,38 @@
+#内容类型配置文件
+
+# 可用类型:
+# text - 单行文本，最多255个字符
+# integer 整数，例如：142
+# float - 小数，例如:23.01
+## geolocation - 地理位置
+## imagelist - text (65kb) - Input type for imagelists. Add multiple images with a description. Useful for image sliders, galleries, etcetera.
+# image - 图片，数据库中保存为路径
+# file - 文件，数据库中保存为路径
+# video - 视频，数据库中保存为路径
+# html - 富文本内容，图文表格等排版
+# textarea - 多行文本，纯文本
+# datetime - 日期时间
+# date - 日期
+# select - 定义可选项
+
+#单页内容，例如：关于我们、公司介绍
+page:
+    name: pages
+    title: 单页列表
+    singular_name: page
+    singular_title: 单页
+    fields:
+        title:
+            type: text
+            label: 标题
+        summarize:
+            type: textarea
+            label: 概述
+        body:
+            type: html
+            label: 详细内容
+        image:
+            type: image
+            label: 图片
+    sort: title
+    per_page: 20
