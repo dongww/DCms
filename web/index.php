@@ -1,4 +1,7 @@
 <?php
+/**
+ * 基于 Silex 的简单 CMS 系统
+ */
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $app = new Core\Appliction();
@@ -14,7 +17,7 @@ $app->get('/setup', function() use($app){
     $book->title = 'Gifted Programmers';
     $book->author = 'Charles Xavier';
 
-    $id = R::store($book);
+    R::store($book);
 });
 
 $app->run();
