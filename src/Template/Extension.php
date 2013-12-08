@@ -41,6 +41,13 @@ class Extension extends \Twig_Extension
         );
     }
 
+    /**
+     * 基于SimpleForm的表单扩展函数
+     *
+     * @param $name
+     * @param array $data
+     * @return string
+     */
     public function displaySimpleForm($name, $data = array())
     {
         $contentTypes = $this->app['config']->getContentTypesConfig();
@@ -52,6 +59,13 @@ class Extension extends \Twig_Extension
 
     }
 
+    /**
+     * 基于SymfonyForm的表单扩展函数
+     *
+     * @param $name
+     * @param array $data
+     * @return string
+     */
     public function displaySymfonyForm($name, $data = array())
     {
         $contentTypes = $this->app['config']->getContentTypesConfig();
@@ -84,5 +98,4 @@ class Extension extends \Twig_Extension
         ));
 
     }
-
 } 
