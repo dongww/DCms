@@ -31,7 +31,7 @@ class Extension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('simple_form', array($this, 'displaySimpleForm'), array(
+            new \Twig_SimpleFunction('simple_form', array($this, 'displayForm'), array(
                 'is_safe' => array('html')
             )),
             new \Twig_SimpleFunction('symfony_form', array($this, 'displaySymfonyForm'), array(
@@ -48,7 +48,7 @@ class Extension extends \Twig_Extension
      * @param array $data
      * @return string
      */
-    public function displaySimpleForm($name, $tplFile = 'form/simple_form.twig', $data = array())
+    public function displayForm($name, $tplFile = 'form/simple_form.twig', $data = array())
     {
         $contentTypes = $this->app['config']->getContentTypesConfig();
 
