@@ -1,6 +1,5 @@
 <?php
 /**
- * Created by PhpStorm.
  * User: dongweiwei
  * Date: 13-12-4
  * Time: 下午6:37
