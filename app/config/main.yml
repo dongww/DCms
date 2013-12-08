@@ -3,10 +3,11 @@
 #是否调试模式
 debug: true
 
+#是否显示 NOTICE 信息
+display_notice: true
+
 #数据库配置
 db:
     dsn: 'mysql:host=127.0.0.1;dbname=silex_cms'
     user: root
     password: ~
-
-test: [你好, 不好]

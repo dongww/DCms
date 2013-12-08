@@ -31,7 +31,10 @@ class Config
     public function __construct($configPath)
     {
         $this->configPath = $configPath;
-        $this->values = array();
+        $this->values = array(
+            'main' => null,
+            'content_types' => null,
+        );
     }
 
     public function getMainConfig()
