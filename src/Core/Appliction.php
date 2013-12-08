@@ -34,7 +34,9 @@ class Appliction extends baseApp
             error_reporting(0);
         }
 
-
+        if ($this['debug']) {
+            $this->mount('/demo/admin', new \Controller\Demo\AdminControllerProvider());
+        }
     }
 
     /**
@@ -44,7 +46,7 @@ class Appliction extends baseApp
      */
     public function setDebug($type = true)
     {
-        $app['debug'] = $type;
+        $this['debug'] = $type;
     }
 
     /**
