@@ -1,5 +1,8 @@
 <?php
 /**
+ * 定制的 Aplication。
+ * 注册核心组件
+ *
  * User: dongweiwei
  * Date: 13-12-1
  * Time: 下午2:18
@@ -9,7 +12,7 @@ namespace Core;
 
 use Silex\Application as baseApp;
 
-class Appliction extends baseApp
+class Application extends baseApp
 {
     public function __construct()
     {
@@ -50,7 +53,7 @@ class Appliction extends baseApp
     }
 
     /**
-     * 注册核心服务
+     * 注册核心组件
      */
     public function regProviders()
     {
@@ -117,7 +120,6 @@ class Appliction extends baseApp
      */
     public function initUrlGenerator()
     {
-
         $this->register(new Silex\Provider\UrlGeneratorServiceProvider());
     }
 } 

@@ -4,7 +4,7 @@
  */
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$app = new Core\Appliction();
+$app = new Core\Application();
 
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.twig');
