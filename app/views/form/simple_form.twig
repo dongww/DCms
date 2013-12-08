@@ -1,16 +1,17 @@
-{% spaceless %}
-    <h1 class="simple-form-h1">{% if data.id %}修改{% else %}新建{% endif %}{{ form.singular_title }}</h1>
-    <form action="/form/{{ form.name }}" method="post">
-        <input type="hidden" name="id" value="{{ data.id }}">
-        {% for name, field in form.fields %}
-            {% if field.type == 'text' %}
-                <div>{{ field.label }}：<input type="text" name="{{ name }}"></div>
-            {% elseif field.type == 'textarea' %}
-                <div>{{ field.label }}：<textarea></textarea></div>
-            {% elseif field.type == 'image' %}
-                <div>{{ field.label }}：<input type="file" name="{{ name }}"></div>
-            {% endif %}
-        {% endfor %}
-        <div><input type="submit" value="确定"></div>
-    </form>
-{% endspaceless %}
+<h1 class="simple-form-h1">{% if data.id %}修改{% else %}新建{% endif %}{{ form.singular_title }}</h1>
+<form action="/form/edit" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{{ data.id }}">
+    <input type="hidden" name="content_type" value="{{ form.name }}">
+    {% for name, field in form.fields %}
+        {% if field.type == 'text' %}
+            <div>{{ field.label }}：<input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}"></div>
+        {% elseif field.type == 'textarea' %}
+            <div>{{ field.label }}：<textarea id="form_{{ form.name }}_{{ name }}" name="{{ name }}"></textarea></div>
+        {% elseif field.type == 'html' %}
+            <div>{{ field.label }}：<textarea id="form_{{ form.name }}_{{ name }}" name="{{ name }}"></textarea></div>
+        {% elseif field.type == 'image' %}
+            <div>{{ field.label }}：<input id="form_{{ form.name }}_{{ name }}" type="file" name="{{ name }}"></div>
+        {% endif %}
+    {% endfor %}
+    <div><input type="submit" value="确定"></div>
+</form>

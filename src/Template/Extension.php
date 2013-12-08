@@ -50,10 +50,8 @@ class Extension extends \Twig_Extension
      */
     public function displayForm($name, $tplFile = 'form/simple_form.twig', $data = array())
     {
-        $contentTypes = $this->app['config']->getContentTypesConfig();
-
         return $this->app['twig']->render($tplFile, array(
-            'form' => $contentTypes[$name],
+            'form' => $this->app['contentTypesConfig'][$name],
             'data' => $data
         ));
     }
@@ -67,11 +65,9 @@ class Extension extends \Twig_Extension
      */
     public function displaySymfonyForm($name, $data = array())
     {
-        $contentTypes = $this->app['config']->getContentTypesConfig();
-
         $formBuilder = $this->app['form.factory']->createBuilder('form', $data);
 
-        foreach ($contentTypes[$name]['fields'] as $fieldName => $field) {
+        foreach ($this->app['contentTypesConfig'][$name]['fields'] as $fieldName => $field) {
             switch ($field['type']) {
                 case 'text':
                     $formBuilder->add($fieldName, 'text', array(

@@ -25,8 +25,6 @@ class Application extends baseApp
 
         $this->regProviders();
 
-        $this->setDebug($this['mainConfig']['debug']);
-
         if ($this['debug']) {
             if ($this['mainConfig']['display_notice']) {
                 error_reporting(E_ALL);
@@ -58,9 +56,11 @@ class Application extends baseApp
     public function regProviders()
     {
         $this->initConfig();
+        $this->setDebug($this['mainConfig']['debug']);
         $this->initDatabase();
         $this->initForm();
         $this->initTemplate();
+        $this->initController();
     }
 
     /**
@@ -73,9 +73,10 @@ class Application extends baseApp
         ));
 
         /**
-         * 读取主配置文件
+         * 读取主配置和内容类型配置
          */
         $this['mainConfig'] = $this['config']->getMainConfig();
+        $this['contentTypesConfig'] = $this['config']->getContentTypesConfig();
     }
 
     /**
@@ -108,7 +109,8 @@ class Application extends baseApp
             'twig.path' => $this['appPath'] . '/views',
             'twig.options' => array(
                 'cache' => $this['dataPath'] . '/cache',
-                'strict_variables' => false
+                'strict_variables' => false,
+                'debug' => $this['debug']
             )
         ));
 
@@ -121,5 +123,13 @@ class Application extends baseApp
     public function initUrlGenerator()
     {
         $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
+    }
+
+    /**
+     * 注册核心控制器
+     */
+    public function initController()
+    {
+        $this->mount('/form', new \Controller\FormControllerProvider());
     }
 } 

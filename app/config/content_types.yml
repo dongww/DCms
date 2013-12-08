@@ -17,9 +17,9 @@
 
 #单页内容，例如：关于我们、公司介绍
 page:
-    name: pages
+    name: page
     title: 单页列表
-    singular_name: page
+    #singular_name: page
     singular_title: 单页
     fields:
         title:

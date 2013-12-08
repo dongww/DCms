@@ -9,7 +9,6 @@
 namespace Controller\Demo;
 
 use Silex\Application;
-use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\ControllerProviderInterface;
 
