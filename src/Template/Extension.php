@@ -43,19 +43,19 @@ class Extension extends \Twig_Extension
     /**
      * 基于SimpleForm的表单扩展函数
      *
-     * @param $name
+     * @param string $name 指定生成表单的内容类型
+     * @param string $tplFile 指定表单模板文件
      * @param array $data
      * @return string
      */
-    public function displaySimpleForm($name, $data = array())
+    public function displaySimpleForm($name, $tplFile = 'form/simple_form.twig', $data = array())
     {
         $contentTypes = $this->app['config']->getContentTypesConfig();
 
-        return $this->app['twig']->render('form/simple_form.twig', array(
+        return $this->app['twig']->render($tplFile, array(
             'form' => $contentTypes[$name],
             'data' => $data
         ));
-
     }
 
     /**
@@ -95,6 +95,5 @@ class Extension extends \Twig_Extension
         return $this->app['twig']->render('form/symfony_form.twig', array(
             'form' => $form->createView(),
         ));
-
     }
 } 
