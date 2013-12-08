@@ -7,14 +7,13 @@
 
 namespace Template;
 
-use Core\Appliction;
-use Silex\Application;
+use Core\Application;
 
 class Extension extends \Twig_Extension
 {
     protected $app;
 
-    public function __construct(Appliction $app)
+    public function __construct(Application $app)
     {
         $this->app = $app;
     }

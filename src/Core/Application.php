@@ -120,6 +120,6 @@ class Application extends baseApp
      */
     public function initUrlGenerator()
     {
-        $this->register(new Silex\Provider\UrlGeneratorServiceProvider());
+        $this->register(new \Silex\Provider\UrlGeneratorServiceProvider());
     }
 } 
