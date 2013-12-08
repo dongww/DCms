@@ -13,6 +13,12 @@ use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\ControllerProviderInterface;
 
+/**
+ * 示范性的后台功能
+ *
+ * Class AdminControllerProvider
+ * @package Controller\Demo
+ */
 class AdminControllerProvider implements ControllerProviderInterface
 {
     /**
