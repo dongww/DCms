@@ -25,7 +25,7 @@ class Extension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'silex_cms_extension';
+        return 'd_cms_extension';
     }
 
     public function getFunctions()
