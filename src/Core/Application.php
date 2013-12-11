@@ -34,10 +34,6 @@ class Application extends baseApp
         } else {
             error_reporting(0);
         }
-
-        if ($this['debug']) {
-            $this->mount('/demo/admin', new \Controller\Demo\AdminControllerProvider());
-        }
     }
 
     /**
@@ -84,7 +80,9 @@ class Application extends baseApp
      */
     public function initDatabase()
     {
-        \R::setup($this['mainConfig']['db']['dsn'], $this['mainConfig']['db']['user'], $this['mainConfig']['db']['password']);
+        \R::setup($this['mainConfig']['db']['dsn'],
+            $this['mainConfig']['db']['user'],
+            $this['mainConfig']['db']['password']);
     }
 
     /**
@@ -92,12 +90,6 @@ class Application extends baseApp
      */
     public function initForm()
     {
-
-        $this->register(new \Silex\Provider\FormServiceProvider());
-        $this->register(new \Silex\Provider\ValidatorServiceProvider());
-        $this->register(new \Silex\Provider\TranslationServiceProvider(), array(
-            'translator.messages' => array(),
-        ));
     }
 
     /**
@@ -131,5 +123,9 @@ class Application extends baseApp
     public function initController()
     {
         $this->mount('/form', new \Controller\FormControllerProvider());
+
+        if ($this['debug']) {
+            $this->mount('/demo/admin', new \Controller\Demo\AdminControllerProvider());
+        }
     }
 } 

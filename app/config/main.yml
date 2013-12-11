@@ -8,6 +8,6 @@ display_notice: true
 
 #数据库配置
 db:
-    dsn: 'mysql:host=127.0.0.1;dbname=silex_cms'
+    dsn: 'mysql:host=127.0.0.1;dbname=d_cms'
     user: root
     password: ~

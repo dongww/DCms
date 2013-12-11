@@ -31,17 +31,14 @@ class Extension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('simple_form', array($this, 'displayForm'), array(
-                'is_safe' => array('html')
-            )),
-            new \Twig_SimpleFunction('symfony_form', array($this, 'displaySymfonyForm'), array(
+            new \Twig_SimpleFunction('d_form', array($this, 'displayForm'), array(
                 'is_safe' => array('html')
             )),
         );
     }
 
     /**
-     * 基于SimpleForm的表单扩展函数
+     * 表单扩展函数
      *
      * @param string $name 指定生成表单的内容类型
      * @param string $tplFile 指定表单模板文件
@@ -53,43 +50,6 @@ class Extension extends \Twig_Extension
         return $this->app['twig']->render($tplFile, array(
             'form' => $this->app['contentTypesConfig'][$name],
             'data' => $data
-        ));
-    }
-
-    /**
-     * 基于SymfonyForm的表单扩展函数
-     *
-     * @param $name
-     * @param array $data
-     * @return string
-     */
-    public function displaySymfonyForm($name, $data = array())
-    {
-        $formBuilder = $this->app['form.factory']->createBuilder('form', $data);
-
-        foreach ($this->app['contentTypesConfig'][$name]['fields'] as $fieldName => $field) {
-            switch ($field['type']) {
-                case 'text':
-                    $formBuilder->add($fieldName, 'text', array(
-                        'label' => $field['label']
-                    ));
-                    break;
-                case 'textarea':
-                    $formBuilder->add($fieldName, 'textarea', array(
-                        'label' => $field['label']
-                    ));
-                    break;
-                case 'image':
-                    $formBuilder->add($fieldName, 'file', array(
-                        'label' => $field['label']
-                    ));
-                    break;
-            }
-        }
-
-        $form = $formBuilder->getForm();
-        return $this->app['twig']->render('form/symfony_form.twig', array(
-            'form' => $form->createView(),
         ));
     }
 } 
