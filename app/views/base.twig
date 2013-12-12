@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="Description" content="{% block meta_description %}{% endblock %}"/>
+    <meta name="Keywords" content="{% block meta_keywords %}{% endblock %}"/>
+    <title>{% block title %}{% endblock %}</title>
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="/js/jquery-1.10.2.min.js"></script>
+    <!--[else]>
+    <script type="text/javascript" src="/js/jquery-2.0.3.min.js"></script>
+    <![endif]-->
+    {% block head_ext %}{% endblock %}
+</head>
+<body>
+{% block content_main %}{% endblock %}
+{% block footer_js %}{% endblock %}
+</body>
+</html>
