@@ -72,7 +72,7 @@ class Application extends baseApp
          * 读取主配置和内容类型配置
          */
         $this['mainConfig'] = $this['config']->getMainConfig();
-        $this['contentTypesConfig'] = $this['config']->getContentTypesConfig();
+        $this['structureConfig'] = $this['config']->getStructureConfig();
     }
 
     /**

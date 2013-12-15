@@ -32,7 +32,7 @@ class Config
         $this->configPath = $configPath;
         $this->values = array(
             'main' => null,
-            'content_types' => null,
+            'structure' => null,
         );
     }
 
@@ -47,11 +47,11 @@ class Config
     /**
      * @return array
      */
-    public function getContentTypesConfig()
+    public function getStructureConfig()
     {
-        if (!$this->values['content_types']) {
-            $this->values['content_types'] = Yaml::parse($this->configPath . '/content_types.yml');
+        if (!$this->values['structure']) {
+            $this->values['structure'] = Yaml::parse($this->configPath . '/structure.yml');
         }
-        return $this->values['content_types'];
+        return $this->values['structure'];
     }
 } 

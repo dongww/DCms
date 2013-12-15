@@ -1,4 +1,4 @@
-#内容类型配置文件
+#数据类型配置文件
 
 # 可用类型:
 # text - 单行文本，最多255个字符
@@ -19,8 +19,6 @@
 page:
     name: page
     title: 单页
-    #singular_name: page
-    #singular_title: 单页
     fields:
         title:
             type: text

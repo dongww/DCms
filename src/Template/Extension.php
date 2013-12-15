@@ -49,7 +49,7 @@ class Extension extends \Twig_Extension
     public function displayForm($name, $tplFile = 'form/simple_form.twig', $data = array())
     {
         return $this->app['twig']->render($tplFile, array(
-            'form' => $this->app['contentTypesConfig'][$name],
+            'form' => $this->app['structureConfig'][$name],
             'data' => $data
         ));
     }
