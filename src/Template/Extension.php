@@ -50,8 +50,7 @@ class Extension extends \Twig_Extension
     {
         return $this->app['twig']->render($tplFile, array(
             'form' => $this->app['contentTypesConfig'][$name],
-            'data' => $data,
-            'a' =>  array('b'=>'xxx')
+            'data' => $data
         ));
     }
 
