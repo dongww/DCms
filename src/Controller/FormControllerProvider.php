@@ -29,8 +29,10 @@ class FormControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/edit', array($this, 'edit'))
-            ->method('GET|POST')
+            //->method('GET|POST')
             ->bind('content_edit');
+        $controllers->post('/ck_upload', array($this, 'ckUpload'))
+            ->bind('ck_upload');
 
         return $controllers;
     }
@@ -67,5 +69,17 @@ class FormControllerProvider implements ControllerProviderInterface
 
             \R::store($content);
         }
+    }
+
+    public function ckUpload(Request $request, Application $app)
+    {
+        $file = $request->files->get('upload');
+        $toPath = __DIR__ . '/../../web/upload/';
+        $filename = time() . $file->getClientOriginalName();
+        $file->move($toPath, $filename);
+
+        $funcNum = $_GET['CKEditorFuncNum'];
+        $url = '/upload/' . $filename;
+        return "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($funcNum, '$url', '');</script>";
     }
 } 

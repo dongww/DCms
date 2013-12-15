@@ -8,6 +8,9 @@
 
 {% macro html(form, name) %}
     <textarea id="form_{{ form.name }}_{{ name }}" name="{{ name }}"></textarea>
+    <script>
+        CKEDITOR.replace("{{ name }}");
+    </script>
 {% endmacro %}
 
 {% macro image(form, name) %}
