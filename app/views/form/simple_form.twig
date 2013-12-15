@@ -1,16 +1,24 @@
+{% import "form/macro/form.twig" as dform %}
 <h1 class="simple-form-h1">{% if data.id %}修改{% else %}新建{% endif %}{{ form.singular_title }}</h1>
 <form action="/form/edit" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" value="{{ data.id }}">
     <input type="hidden" name="content_type" value="{{ form.name }}">
     {% for name, field in form.fields %}
         {% if field.type == 'text' %}
-            <div>{{ field.label }}：<input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}"></div>
+            <div>{{ field.label }}：{{ dform.text(form, name) }}</div>
         {% elseif field.type == 'textarea' %}
-            <div>{{ field.label }}：<textarea id="form_{{ form.name }}_{{ name }}" name="{{ name }}"></textarea></div>
+            <div>{{ field.label }}：{{ dform.textarea(form, name) }}</div>
         {% elseif field.type == 'html' %}
-            <div>{{ field.label }}：<textarea id="form_{{ form.name }}_{{ name }}" name="{{ name }}"></textarea></div>
+            <div>{{ field.label }}：{{ dform.html(form, name) }}</div>
         {% elseif field.type == 'image' %}
-            <div>{{ field.label }}：<input id="form_{{ form.name }}_{{ name }}" type="file" name="{{ name }}"></div>
+            <div>{{ field.label }}：{{ dform.image(form, name) }}</div>
+        {% endif %}
+    {% endfor %}
+    {% for name, rel in form.relations %}
+        {% if rel.type == 'm2o' %}
+            {% if rel.display == 'select' %}
+                <div>{{ rel.label }}：{{ dform.select(form, name, d_content(name)) }}</div>
+            {% endif %}
         {% endif %}
     {% endfor %}
     <div><input type="submit" value="确定"></div>

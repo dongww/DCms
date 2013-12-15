@@ -34,6 +34,7 @@ class Extension extends \Twig_Extension
             new \Twig_SimpleFunction('d_form', array($this, 'displayForm'), array(
                 'is_safe' => array('html')
             )),
+            new \Twig_SimpleFunction('d_content', array($this, 'getContent')),
         );
     }
 
@@ -49,7 +50,18 @@ class Extension extends \Twig_Extension
     {
         return $this->app['twig']->render($tplFile, array(
             'form' => $this->app['contentTypesConfig'][$name],
-            'data' => $data
+            'data' => $data,
+            'a' =>  array('b'=>'xxx')
         ));
+    }
+
+    /**
+     * 获取指定类型的数据
+     *
+     * @param $name 类型
+     */
+    public function getContent($name)
+    {
+        return \R::findAll($name);
     }
 } 

@@ -1,0 +1,23 @@
+{% macro text(form, name) %}
+    <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}">
+{% endmacro %}
+
+{% macro textarea(form, name) %}
+    <textarea id="form_{{ form.name }}_{{ name }}" name="{{ name }}"></textarea>
+{% endmacro %}
+
+{% macro html(form, name) %}
+    <textarea id="form_{{ form.name }}_{{ name }}" name="{{ name }}"></textarea>
+{% endmacro %}
+
+{% macro image(form, name) %}
+    <input id="form_{{ form.name }}_{{ name }}" type="file" name="{{ name }}">
+{% endmacro %}
+
+{% macro select(form, name, data) %}
+    <select name="{{ name }}">
+        {% for item in data %}
+            <option value="{{ item.id }}">{{ item.title }}</option>
+        {% endfor %}
+    </select>
+{% endmacro %}

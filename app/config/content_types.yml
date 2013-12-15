@@ -18,9 +18,9 @@
 #单页内容，例如：关于我们、公司介绍
 page:
     name: page
-    title: 单页列表
+    title: 单页
     #singular_name: page
-    singular_title: 单页
+    #singular_title: 单页
     fields:
         title:
             type: text
@@ -36,3 +36,22 @@ page:
             label: 图片
     sort: title
     per_page: 20
+    #关联
+    relations:
+        class:
+            type: m2o
+            #显示内容的字段，值取id
+            text: title
+            #标签类型。m2o可选：radio select，默认select，m2m可选：checkbox,m_select，默认checkbox
+            display: select
+            label: 分类
+            order: title
+
+
+class:
+    name: class
+    title: 单页分类
+    fields:
+        title:
+            type: text
+            label: 标题
