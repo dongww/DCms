@@ -51,7 +51,7 @@ class FormControllerProvider implements ControllerProviderInterface
         } else {
             //id不存在，为新建模式
 
-            $contentName = $request->request->get('content_type');
+            $contentName = $request->request->get('structure');
             $content = \R::dispense($contentName);
 
             foreach ($app['structureConfig'][$contentName]['fields'] as $fieldName => $field) {

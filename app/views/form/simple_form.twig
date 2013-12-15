@@ -1,8 +1,8 @@
 {% import "form/macro/form.twig" as dform %}
-<h1 class="simple-form-h1">{% if data.id %}修改{% else %}新建{% endif %}{{ form.singular_title }}</h1>
+<h1 class="simple-form-h1">{% if data.id %}修改{% else %}新建{% endif %}{{ form.title }}</h1>
 <form action="/form/edit" method="post" enctype="multipart/form-data">
     <input type="hidden" name="id" value="{{ data.id }}">
-    <input type="hidden" name="content_type" value="{{ form.name }}">
+    <input type="hidden" name="structure" value="{{ form.name }}">
     {% for name, field in form.fields %}
         {% if field.type == 'text' %}
             <div>{{ field.label }}：{{ dform.text(form, name) }}</div>
