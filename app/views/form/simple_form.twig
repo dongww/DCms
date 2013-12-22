@@ -19,6 +19,10 @@
             {% if rel.display == 'select' %}
                 <div>{{ rel.label }}：{{ dform.select(form, name, d_content(name)) }}</div>
             {% endif %}
+        {% elseif rel.type == 'm2m'  %}
+            {% if rel.display == 'checkboxes' %}
+                <div>{{ rel.label }}：{{ dform.checkboxes(form, name, d_content(name)) }}</div>
+            {% endif %}
         {% endif %}
     {% endfor %}
     <div><input type="submit" value="确定"></div>

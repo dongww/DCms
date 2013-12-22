@@ -58,14 +58,25 @@ class FormControllerProvider implements ControllerProviderInterface
                 $content->$fieldName = $request->request->get($fieldName);
             }
 
-            foreach ($app['structureConfig'][$contentName]['relations'] as $relName => $rel) {
-                if ($request->request->get($relName)) {
-                    if ($rel['type'] == 'm2o') {
-                        $obj = \R::load($relName, $request->request->get($relName));
-                        $content->$relName = $obj;
+            if ($app['structureConfig'][$contentName]['relations']) {
+                foreach ($app['structureConfig'][$contentName]['relations'] as $relName => $rel) {
+                    if ($request->request->get($relName)) {
+                        switch ($rel['type']) {
+                            case 'm2o':
+                                $obj = \R::load($relName, $request->request->get($relName));
+                                $content->$relName = $obj;
+                                break;
+                            case 'm2m':
+                                $rels = \R::find($relName, 'id in (' . \R::genSlots($request->request->get($relName)) . ')',
+                                    $request->request->get($relName));
+                                $p = 'shared' . ucwords($relName);
+                                $content->$p = $rels;
+                                break;
+                        }
                     }
                 }
             }
+
 
             \R::store($content);
         }

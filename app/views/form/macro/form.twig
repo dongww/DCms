@@ -24,3 +24,10 @@
         {% endfor %}
     </select>
 {% endmacro %}
+
+{% macro checkboxes(form, name, data) %}
+    {% for item in data %}
+        <input type="checkbox" value="{{ item.id }}" id="form_{{ form.name }}_{{ name }}_{{ item.id }}" name="{{ name }}[]">
+        <label for="form_{{ form.name }}_{{ name }}_{{ item.id }}">{{ item.name }}</label>
+    {% endfor %}
+{% endmacro %}

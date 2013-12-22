@@ -47,8 +47,8 @@ page:
         tag:
             type: m2m #多对多
             text: name
-            display: checkbox
-            lable: 标签
+            display: checkboxes
+            label: 标签
             order: name
 
 
