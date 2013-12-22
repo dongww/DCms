@@ -33,17 +33,23 @@ page:
             type: image
             label: 图片
     sort: title
-    per_page: 20
+    limit: 20 #每页条数
     #关联
     relations:
         class:
-            type: m2o
+            type: m2o #多对一
             #显示内容的字段，值取id
             text: title
             #标签类型。m2o可选：radio select，默认select，m2m可选：checkbox,m_select，默认checkbox
             display: select
             label: 分类
             order: title
+        tag:
+            type: m2m #多对多
+            text: name
+            display: checkbox
+            lable: 标签
+            order: name
 
 
 class:
@@ -53,3 +59,11 @@ class:
         title:
             type: text
             label: 标题
+
+tag:
+    name: tag
+    title: 标签
+    fields:
+            name:
+                type: text
+                label: 名称
