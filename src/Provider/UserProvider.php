@@ -3,7 +3,7 @@ namespace D\Provider;
 
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use D\User;
+use Core\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
@@ -15,7 +15,6 @@ class UserProvider implements UserProviderInterface
 
     public function loadUserByUsername($username)
     {
-        //$stmt = $this->conn->executeQuery('SELECT * FROM Users WHERE username = ?', array($username));
         $user = \R::findOne('user', ' username = ? ', array($username));
 
         if (!$user) {
