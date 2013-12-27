@@ -3,7 +3,8 @@
         "silex/silex": "~1.1",
         "symfony/config": "*",
         "symfony/yaml": "*",
-        "twig/twig": "*"
+        "twig/twig": "*",
+        "symfony/security": "*"
     },
     "autoload": {
         "psr-0": {
