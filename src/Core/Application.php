@@ -27,9 +27,9 @@ class Application extends baseApp
 
         if ($this['debug']) {
             if ($this['mainConfig']['display_notice']) {
-                error_reporting(E_ALL);
-            } else {
                 error_reporting(E_ALL ^ E_NOTICE);
+            } else {
+                error_reporting(E_ERROR);
             }
         } else {
             error_reporting(0);
