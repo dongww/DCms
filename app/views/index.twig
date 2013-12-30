@@ -1,5 +1,6 @@
 {% extends "base.twig" %}
 {% block content_main %}
     <script src="/js/ckeditor/ckeditor.js"></script>
-    {{ d_form('page') }}
+    {#{{ d_form('page') }}#}
+    {% set d = d_content('page', {'a':'b', 'c':1}) %}
 {% endblock %}

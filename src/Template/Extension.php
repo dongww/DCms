@@ -56,11 +56,31 @@ class Extension extends \Twig_Extension
 
     /**
      * 获取指定类型的数据
+     * $options 的用法：\n
+     * {'id': 123} 获取某一条id的数据\n
+     * {'last': 5, 'by': 'public_time'} 获取最后5条，以public_time排序。默认按 id\n
+     * {'per_page': 5, 'page': 2, 'by': 'public_time', 'order': 'desc'} 每页5条，第2页，以public_time倒序排列\n
+     * {'where': "category = ? and ...", 'values': [3,...]} 设置查询条件\n
      *
      * @param $name 类型
+     * @param $options 选项
+     * @return array
      */
-    public function getContent($name)
+    public function getContent($name, $options = array())
     {
+        /**
+         * 如果 id 有值
+         */
+        if($options['id'] > 0){
+            return \R::load($name, $options['id']);
+        }
+
+        if($options['last']){
+            if($options['by']){
+
+            }
+        }
+
         return \R::findAll($name);
     }
 } 
