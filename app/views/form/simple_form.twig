@@ -19,9 +19,13 @@
             {% if rel.display == 'select' %}
                 <div>{{ rel.label }}：{{ dform.select(form, name, d_content(name)) }}</div>
             {% endif %}
-        {% elseif rel.type == 'm2m'  %}
+        {% elseif rel.type == 'm2m' %}
             {% if rel.display == 'checkboxes' %}
-                <div>{{ rel.label }}：{{ dform.checkboxes(form, name, d_content(name)) }}</div>
+                {#<div>{{ rel.label }}：{{ dform.checkboxes(form, name, d_content(name)) }}</div>#}
+                {% for data in d_content(name) %}
+                    {{ dform.checkbox(form, name, data) }}
+                    <label for="form_{{ form.name }}_{{ name }}_{{ data.id }}">{{ data.name }}</label>
+                {% endfor %}
             {% endif %}
         {% endif %}
     {% endfor %}

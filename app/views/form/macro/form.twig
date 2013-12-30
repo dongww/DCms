@@ -1,11 +1,24 @@
+{#单行文本#}
 {% macro text(form, name) %}
     <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}">
 {% endmacro %}
 
+{#整数，例如：142#}
+{% macro integer(form, name) %}
+    <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}">
+{% endmacro %}
+
+{#小数，例如:23.01#}
+{% macro float(form, name) %}
+    <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}">
+{% endmacro %}
+
+{#多行文本，纯文本#}
 {% macro textarea(form, name) %}
     <textarea id="form_{{ form.name }}_{{ name }}" name="{{ name }}"></textarea>
 {% endmacro %}
 
+{#富文本内容，图文表格等排版#}
 {% macro html(form, name) %}
     <textarea id="form_{{ form.name }}_{{ name }}" name="{{ name }}"></textarea>
     <script>
@@ -13,8 +26,29 @@
     </script>
 {% endmacro %}
 
+{#图片，数据库中保存为路径#}
 {% macro image(form, name) %}
     <input id="form_{{ form.name }}_{{ name }}" type="file" name="{{ name }}">
+{% endmacro %}
+
+{#文件，数据库中保存为路径#}
+{% macro file(form, name) %}
+    <input id="form_{{ form.name }}_{{ name }}" type="file" name="{{ name }}">
+{% endmacro %}
+
+{#视频，数据库中保存为路径#}
+{% macro video(form, name) %}
+    <input id="form_{{ form.name }}_{{ name }}" type="file" name="{{ name }}">
+{% endmacro %}
+
+{#日期和时间#}
+{% macro datetime(form, name) %}
+    <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}">
+{% endmacro %}
+
+{#日期#}
+{% macro date(form, name) %}
+    <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}">
 {% endmacro %}
 
 {% macro select(form, name, data) %}
@@ -25,9 +59,15 @@
     </select>
 {% endmacro %}
 
+{% macro checkbox(form, name, data) %}
+    <input type="checkbox" value="{{ data.id }}" id="form_{{ form.name }}_{{ name }}_{{ data.id }}"
+           name="{{ name }}[]">
+{% endmacro %}
+
 {% macro checkboxes(form, name, data) %}
     {% for item in data %}
-        <input type="checkbox" value="{{ item.id }}" id="form_{{ form.name }}_{{ name }}_{{ item.id }}" name="{{ name }}[]">
+        <input type="checkbox" value="{{ item.id }}" id="form_{{ form.name }}_{{ name }}_{{ item.id }}"
+               name="{{ name }}[]">
         <label for="form_{{ form.name }}_{{ name }}_{{ item.id }}">{{ item.name }}</label>
     {% endfor %}
 {% endmacro %}
