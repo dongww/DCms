@@ -27,35 +27,13 @@
 
         <div class="header item">
             <i class="user icon"></i>
-            客户管理
+            新闻管理
         </div>
         <div class="item">
             <div class="menu">
-                <a class="item" href="{{ path('list_customer') }}">客户列表</a>
-                <a class="item" href="{{ path('add_customer') }}">新增客户</a>
-                <a class="item" href="{{ path('customer_group') }}">分组管理</a>
+                <a class="item" href="#">新闻列表</a>
             </div>
         </div>
-
-        <div class="header item">
-            <i class="dollar icon"></i>
-            订单管理
-        </div>
-        <div class="item">
-            <div class="menu">
-                <a class="item" href="{{ path('project_list') }}">订单列表</a>
-            </div>
-        </div>
-
-        <div class="header item">
-            <i class="setting icon"></i>
-            系统设置
-        </div>
-        <div class="item">
-            <div class="menu">
-                <a class="item" href="{{ path('system_user_list') }}">操作员列表</a>
-                <a class="item" href="{{ path('system_logout') }}">退出系统</a>
-            </div>
         </div>
     </div>
 {% endblock %}
@@ -66,9 +44,6 @@
         {% block main %}
         {% endblock %}
     </div>
-</div>
-<div class="ui small modal">
-
 </div>
 <script>
     $('.ui.dropdown').dropdown();
