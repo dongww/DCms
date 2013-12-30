@@ -32,6 +32,8 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('', array($this, 'index'));
+        $controllers->get('/news/edit', array($this, 'editNews'));
+        $controllers->get('/news/edit/{id}', array($this, 'editNews'));
 
         return $controllers;
     }
@@ -39,7 +41,12 @@ class AdminControllerProvider implements ControllerProviderInterface
     public function index(Application $app, Request $request)
     {
         //return 'hello admin ' . $request->get('name');
-        return $app['twig']->render('demo/admin/base.twig');
+        return $app['twig']->render('demo/admin/index.twig');
+    }
+
+    public function editNews(Application $app, Request $request)
+    {
+        return $app['twig']->render('demo/admin/news/edit.twig');
     }
 
 } 
