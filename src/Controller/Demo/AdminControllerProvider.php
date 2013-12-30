@@ -38,7 +38,8 @@ class AdminControllerProvider implements ControllerProviderInterface
 
     public function index(Application $app, Request $request)
     {
-        return 'hello admin ' . $request->get('name');
+        //return 'hello admin ' . $request->get('name');
+        return $app['twig']->render('demo/admin/base.twig');
     }
 
 } 
