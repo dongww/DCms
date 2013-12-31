@@ -14,6 +14,7 @@
 # datetime - 日期时间
 # date - 日期
 # select - 定义可选项
+#category - 分类（无限级），内置的结构，包含字段：id, name, sort
 
 #单页内容，例如：关于我们、公司介绍
 page:
@@ -32,6 +33,12 @@ page:
         image:
             type: image
             label: 图片
+        category:
+            type: category
+            mult: false #若为true，可选择多个分类
+            name: cane
+            label: 页面分类
+
     sort: title
     limit: 20 #每页条数
     #关联

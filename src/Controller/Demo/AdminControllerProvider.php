@@ -34,6 +34,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->get('', array($this, 'index'));
         $controllers->get('/news/edit', array($this, 'editNews'));
         $controllers->get('/news/edit/{id}', array($this, 'editNews'));
+        $controllers->get('/category', array($this, 'category'));
 
         return $controllers;
     }
@@ -47,6 +48,11 @@ class AdminControllerProvider implements ControllerProviderInterface
     public function editNews(Application $app, Request $request)
     {
         return $app['twig']->render('demo/admin/news/edit.twig');
+    }
+
+    public function category(Application $app, Request $request)
+    {
+        return $app['twig']->render('demo/admin/category.twig');
     }
 
 } 

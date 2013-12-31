@@ -8,6 +8,7 @@
 namespace Template;
 
 use Core\Application;
+use Data\Category;
 
 class Extension extends \Twig_Extension
 {
@@ -35,6 +36,7 @@ class Extension extends \Twig_Extension
                 'is_safe' => array('html')
             )),
             new \Twig_SimpleFunction('d_content', array($this, 'getContent')),
+            new \Twig_SimpleFunction('d_category', array($this, 'getCategory')),
         );
     }
 
@@ -71,16 +73,28 @@ class Extension extends \Twig_Extension
         /**
          * 如果 id 有值
          */
-        if($options['id'] > 0){
+        if ($options['id'] > 0) {
             return \R::load($name, $options['id']);
         }
 
-        if($options['last']){
-            if($options['by']){
+        if ($options['last']) {
+            if ($options['by']) {
 
             }
         }
 
         return \R::findAll($name);
+    }
+
+    /**
+     * 获取分类视图
+     *
+     * @param $name
+     * @param array $options
+     */
+    public function getCategory($name, $options = array())
+    {
+        $cate = new Category($name);
+        echo $cate->getTreeView();
     }
 } 
