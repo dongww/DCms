@@ -16,14 +16,21 @@ class Category
     public function __construct($name)
     {
         $this->name = $name;
-        $this->category = \R::findAll($name);
+        $category = \R::findAll($name);
+
+        foreach ($category as $c) {
+            $this->category[] = array(
+                'id' => $c->id,
+                'title' => $c->id,
+                'parent_id' => $c->$name->id
+            );
+        }
     }
 
     protected function hasChildren($id)
     {
-        $name = $this->name;
-        foreach ($this->category as $obj) {
-            if ($obj->$name->id == $id)
+        foreach ($this->category as $row) {
+            if ($row['parent_id'] == $id)
                 return true;
         }
         return false;
@@ -31,18 +38,22 @@ class Category
 
     public function getTreeView($parent = 0)
     {
-        $name = $this->name;
-        $result = "<ul>";
-        foreach ($this->category as $obj) { //echo $obj->$name->id . ',';
-            if ($obj->$name->id == $parent) {
-                $result .= '<li>' . $obj->id;
-                if ($this->hasChildren($obj->id))
-                    $result .= $this->getTreeView($obj->id);
+        $result = '<ul id="jstree_demo_div">';
+        foreach ($this->category as $row) {
+            if ($row['parent_id'] == $parent) {
+                $result .= '<li class="jstree-open" id="category_' . $this->name . '_' . $row['id'] . '">' . $row['title'];
+                if ($this->hasChildren($row['id']))
+                    $result .= $this->getTreeView($row['id']);
                 $result .= "</li>";
             }
         }
         $result .= "</ul>";
 
         return $result;
+    }
+
+    public function getJson()
+    {
+
     }
 } 

@@ -1,4 +1,23 @@
 {% extends "demo/admin/base.twig" %}
 {% block main %}
-    {{ d_category('cane') }}
+    <link rel="stylesheet" href="/js/jstree/themes/default/style.min.css"/>
+    <script src="/js/jstree/jstree.min.js"></script>
+    <div id="tree" style="margin-top: 50px">{{ d_category('cane') }}</div>
+    <script>
+        $(function () {
+            $('#tree').jstree({
+                "core" : {
+                    "multiple" : false,
+                    "check_callback" : true,
+                    "animation" : 0
+                },
+                "plugins" : [
+                    "contextmenu", "dnd", "wholerow"
+                ]
+            });
+            $('#tree').on('move_node.jstree', function(e, data){
+                console.log(data);
+            });
+        });
+    </script>
 {% endblock %}
