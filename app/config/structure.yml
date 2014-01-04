@@ -71,6 +71,6 @@ tag:
     name: tag
     title: 标签
     fields:
-            name:
-                type: text
-                label: 名称
+        name:
+            type: text
+            label: 名称
