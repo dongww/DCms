@@ -21,7 +21,7 @@ class Category
         foreach ($category as $c) {
             $this->category[] = array(
                 'id' => $c->id,
-                'title' => $c->id,
+                'title' => $c->name,
                 'parent_id' => $c->$name->id
             );
         }

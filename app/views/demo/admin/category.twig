@@ -6,7 +6,7 @@
     <div class="ui two column divided grid">
         <div class="row">
             <div class="column">
-                <div id="tree" style="margin-top: 50px">{{ d_category(name) }}</div>
+                <div id="tree">{{ d_category(name) }}</div>
             </div>
             <div class="column">
                 <div class="ui form segment">
@@ -47,7 +47,7 @@
                     return false;
                 }
 
-                $.post('/demo/admin/category/add', { 'name':'{{ name }}', 'select': '', 'position': 'child' }, function(data){
+                $.post('/demo/admin/category/add', { 'name':'{{ name }}', 'select': '', 'position': 'child', 'title': $('#title').val() }, function(data){
                     alert(data.success);
                     return false;
                 })

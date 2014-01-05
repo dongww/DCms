@@ -35,7 +35,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->get('/news/edit', array($this, 'editNews'));
         $controllers->get('/news/edit/{id}', array($this, 'editNews'));
         $controllers->get('/category/{name}', array($this, 'category'));
-        $controllers->post('/category/add', array($this, 'addCategory'));
+        $controllers->post('/category/add', array($this, 'addCategoryJson'));
 
         return $controllers;
     }
@@ -58,10 +58,22 @@ class AdminControllerProvider implements ControllerProviderInterface
         ));
     }
 
-    public function addCategory(Application $app, Request $request)
+    public function addCategoryJson(Application $app, Request $request)
     {
+        $success = false;
+        if ($request->get('name') && $request->get('position') && $request->get('title')) {
+            $category = \R::dispense($request->get('name'));
+            if ($request->get('select')) {
+
+            } else {
+                $category->name = $request->get('title');
+            }
+            if(\R::store($category)){
+                $success = true;
+            }
+        }
         return $app->json(array(
-            'success' => false
+            'success' => $success
         ));
     }
 
