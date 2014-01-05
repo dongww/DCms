@@ -34,7 +34,8 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->get('', array($this, 'index'));
         $controllers->get('/news/edit', array($this, 'editNews'));
         $controllers->get('/news/edit/{id}', array($this, 'editNews'));
-        $controllers->get('/category', array($this, 'category'));
+        $controllers->get('/category/{name}', array($this, 'category'));
+        $controllers->post('/category/add', array($this, 'addCategory'));
 
         return $controllers;
     }
@@ -50,9 +51,18 @@ class AdminControllerProvider implements ControllerProviderInterface
         return $app['twig']->render('demo/admin/news/edit.twig');
     }
 
-    public function category(Application $app, Request $request)
+    public function category(Application $app, Request $request, $name)
     {
-        return $app['twig']->render('demo/admin/category.twig');
+        return $app['twig']->render('demo/admin/category.twig', array(
+            'name' => $name
+        ));
+    }
+
+    public function addCategory(Application $app, Request $request)
+    {
+        return $app->json(array(
+            'success' => false
+        ));
     }
 
 } 

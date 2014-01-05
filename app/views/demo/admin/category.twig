@@ -2,21 +2,55 @@
 {% block main %}
     <link rel="stylesheet" href="/js/jstree/themes/default/style.min.css"/>
     <script src="/js/jstree/jstree.min.js"></script>
-    <div id="tree" style="margin-top: 50px">{{ d_category('cane') }}</div>
+    <h1>分类管理</h1>
+    <div class="ui two column divided grid">
+        <div class="row">
+            <div class="column">
+                <div id="tree" style="margin-top: 50px">{{ d_category(name) }}</div>
+            </div>
+            <div class="column">
+                <div class="ui form segment">
+                    <div class="field">
+                        <label>分类名称</label>
+
+                        <div class="ui left labeled icon input"><input id="title"></div>
+                    </div>
+                    <div class="field">
+                        <a id="add-child" class="ui blue submit button" href="#">创建子分类</a>
+                        <a id="add-pre" class="ui blue submit button" href="#">上方插入分类</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         $(function () {
             $('#tree').jstree({
-                "core" : {
-                    "multiple" : false,
-                    "check_callback" : true,
-                    "animation" : 0
+                "core": {
+                    "multiple": false,
+                    "check_callback": true,
+                    "animation": 0
                 },
-                "plugins" : [
+                "plugins": [
                     "contextmenu", "dnd", "wholerow"
                 ]
             });
-            $('#tree').on('move_node.jstree', function(e, data){
+            $('#tree').on('move_node.jstree', function (e, data) {
                 console.log(data);
+            });
+            $('#add-child').on('click', function () {
+                if ($('#title').val() == '') {
+                    alert('分类名称不能为空');
+                    return false;
+                }
+
+                $.post('/demo/admin/category/add', { 'name':'{{ name }}', 'select': '', 'position': 'child' }, function(data){
+                    alert(data.success);
+                    return false;
+                })
             });
         });
     </script>

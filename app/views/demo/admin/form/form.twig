@@ -1,5 +1,7 @@
 {% import "form/macro/form.twig" as dform %}
 <script src="/js/ckeditor/ckeditor.js"></script>
+<link rel="stylesheet" href="/js/jstree/themes/default/style.min.css"/>
+<script src="/js/jstree/jstree.min.js"></script>
 <h1 class="simple-form-h1">{% if data.id %}修改{% else %}新建{% endif %}{{ form.title }}</h1>
 <form action="/form/edit" method="post" enctype="multipart/form-data" class="ui form segment">
     <input type="hidden" name="id" value="{{ data.id }}">
@@ -16,6 +18,7 @@
             {% elseif field.type == 'image' %}
                 <div class="ui left labeled icon input">{{ dform.image(form, name) }}</div>
             {% endif %}
+
         </div>
     {% endfor %}
     {% for name, rel in form.relations %}
@@ -49,7 +52,14 @@
             {% endif %}
         </div>
     {% endfor %}
-    <button class="ui blue submit button">确定</button>
+    {% for name, cat in form.category %}
+        <div class="field">
+            <label>{{ cat.label }}</label>
+            <a class="ui blue submit button" href="/demo/admin/category/{{ name }}" target="_blank">分类管理</a>
+            {{ dform.category(form, name) }}
+        </div>
+    {% endfor %}
+    <button class="ui red submit button">确定提交</button>
 </form>
 <script>
     $('.ui.radio.checkbox').checkbox();

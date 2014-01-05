@@ -14,7 +14,7 @@
 # datetime - 日期时间
 # date - 日期
 # select - 定义可选项
-#category - 分类（无限级），内置的结构，包含字段：id, name, sort
+
 
 #单页内容，例如：关于我们、公司介绍
 page:
@@ -33,11 +33,11 @@ page:
         image:
             type: image
             label: 图片
-        category:
-            type: category
-            mult: false #若为true，可选择多个分类
-            name: cane
-            label: 页面分类
+#        pagecategory:
+#            type: category
+#            mult: false #若为true，可选择多个分类
+#            #name: cane
+#            label: 所属分类
 
     sort: title
     limit: 20 #每页条数
@@ -49,7 +49,7 @@ page:
             text: title
             #标签类型。m2o可选：radio select，默认select，m2m可选：checkbox,m_select，默认checkboxes
             display: select
-            label: 分类
+            label: 内容分类
             order: title
         tag:
             type: m2m #多对多
@@ -57,7 +57,11 @@ page:
             display: checkboxes
             label: 标签
             order: name
-
+    #分类（无限级）
+    category:
+        pagecategory:
+            mult: false
+            label: 所属分类
 
 class:
     name: class
@@ -74,3 +78,8 @@ tag:
         name:
             type: text
             label: 名称
+
+#多级分类类型不用指定字段，自动包含字段：id, title（标题）, sort（排序）
+pagecategory:
+    name: pagecategory
+    title: 页面所属分类

@@ -64,10 +64,31 @@
            name="{{ name }}[]">
 {% endmacro %}
 
-{% macro checkboxes(form, name, data) %}
-    {% for item in data %}
-        <input type="checkbox" value="{{ item.id }}" id="form_{{ form.name }}_{{ name }}_{{ item.id }}"
-               name="{{ name }}[]">
-        <label for="form_{{ form.name }}_{{ name }}_{{ item.id }}">{{ item.name }}</label>
-    {% endfor %}
+{#{% macro checkboxes(form, name, data) %}#}
+    {#{% for item in data %}#}
+        {#<input type="checkbox" value="{{ item.id }}" id="form_{{ form.name }}_{{ name }}_{{ item.id }}"#}
+               {#name="{{ name }}[]">#}
+        {#<label for="form_{{ form.name }}_{{ name }}_{{ item.id }}">{{ item.name }}</label>#}
+    {#{% endfor %}#}
+{#{% endmacro %}#}
+
+{% macro category(form, name, data) %}
+    <div id="form_{{ form.name }}_{{ name }}_category" style="margin-top: 50px">{{ d_category(name) }}</div>
+    <script>
+        $(function () {
+            $('#form_{{ form.name }}_{{ name }}_category').jstree({
+                "core": {
+                    "multiple": false,
+                    "check_callback": true,
+                    "animation": 0
+                },
+                "plugins": [
+                    "contextmenu", "dnd", "wholerow"
+                ]
+            });
+            $('#tree').on('move_node.jstree', function (e, data) {
+                console.log(data);
+            });
+        });
+    </script>
 {% endmacro %}

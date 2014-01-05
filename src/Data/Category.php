@@ -39,14 +39,17 @@ class Category
     public function getTreeView($parent = 0)
     {
         $result = '<ul id="jstree_demo_div">';
-        foreach ($this->category as $row) {
-            if ($row['parent_id'] == $parent) {
-                $result .= '<li class="jstree-open" id="category_' . $this->name . '_' . $row['id'] . '">' . $row['title'];
-                if ($this->hasChildren($row['id']))
-                    $result .= $this->getTreeView($row['id']);
-                $result .= "</li>";
+        if ($this->category) {
+            foreach ($this->category as $row) {
+                if ($row['parent_id'] == $parent) {
+                    $result .= '<li class="jstree-open" id="category_' . $this->name . '_' . $row['id'] . '">' . $row['title'];
+                    if ($this->hasChildren($row['id']))
+                        $result .= $this->getTreeView($row['id']);
+                    $result .= "</li>";
+                }
             }
         }
+
         $result .= "</ul>";
 
         return $result;
