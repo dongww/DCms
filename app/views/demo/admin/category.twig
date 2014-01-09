@@ -11,6 +11,7 @@
             <div class="column">
                 <div class="ui form segment">
                     <div class="field">
+                        <input type="hidden" id="selected-id">
                         <label>分类名称</label>
 
                         <div class="ui left labeled icon input"><input id="title"></div>
@@ -18,6 +19,7 @@
                     <div class="field">
                         <a id="add-child" class="ui blue submit button" href="#">创建子分类</a>
                         <a id="add-pre" class="ui blue submit button" href="#">上方插入分类</a>
+                        <a id="add-next" class="ui blue submit button" href="#">下方插入分类</a>
                     </div>
 
                 </div>
@@ -27,6 +29,23 @@
 
 
     <script>
+        function addNode(type) {
+            if ($('#title').val() == '') {
+                alert('分类名称不能为空');
+                return false;
+            }
+
+            $.post('/demo/admin/category/add', { 'name': '{{ name }}', 'selected': $('#selected-id').val(), 'position': type, 'title': $('#title').val() }, function (data) {
+                if(data.success){
+                    alert('操作成功');
+                    location.reload();
+                }else{
+                    alert('出现错误');
+                }
+
+                return false;
+            })
+        }
         $(function () {
             $('#tree').jstree({
                 "core": {
@@ -42,15 +61,27 @@
                 console.log(data);
             });
             $('#add-child').on('click', function () {
-                if ($('#title').val() == '') {
-                    alert('分类名称不能为空');
+                addNode('child');
+            });
+
+            $('#add-pre').on('click', function () {
+                if(!$('#selected-id').val()){
+                    alert('请先选择一个分类');
                     return false;
                 }
+                addNode('pre');
+            });
 
-                $.post('/demo/admin/category/add', { 'name':'{{ name }}', 'select': '', 'position': 'child', 'title': $('#title').val() }, function(data){
-                    alert(data.success);
+            $('#add-next').on('click', function () {
+                if(!$('#selected-id').val()){
+                    alert('请先选择一个分类');
                     return false;
-                })
+                }
+                addNode('next');
+            });
+
+            $('#tree').on('changed.jstree', function (e, data) {
+                $('#selected-id').val(data.instance.get_node(data.selected[0]).id);
             });
         });
     </script>

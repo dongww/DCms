@@ -11,6 +11,7 @@ namespace Controller\Demo;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\ControllerProviderInterface;
+use Data\Category;
 
 /**
  * 示范性的后台功能
@@ -61,19 +62,47 @@ class AdminControllerProvider implements ControllerProviderInterface
     public function addCategoryJson(Application $app, Request $request)
     {
         $success = false;
-        if ($request->get('name') && $request->get('position') && $request->get('title')) {
-            $category = \R::dispense($request->get('name'));
-            if ($request->get('select')) {
+        $errorMessages = array();
 
-            } else {
-                $category->name = $request->get('title');
+//        if ($request->get('name') && $request->get('position') && $request->get('title')) {
+//            $category = \R::dispense($request->get('name'));
+//            if ($request->get('select')) {
+//
+//            } else {
+//                $category->name = $request->get('title');
+//            }
+//            if(\R::store($category)){
+//                $success = true;
+//            }
+//        }
+        if ($request->get('name')) {
+            $category = new Category($request->get('name'));
+            $s = explode('_', $request->get('selected'));
+            $selectedId = $s[count($s) - 1];
+            switch ($request->get('position')) {
+                case 'child':
+                    if ($category->addChildNode($selectedId, $request->get('title'))) {
+                        $success = true;
+                    }
+                    break;
+                case 'pre':
+                    if ($category->addPreNode($selectedId, $request->get('title'))) {
+                        $success = true;
+                    }
+                    break;
+                case 'next':
+                    if ($category->addNextNode($selectedId, $request->get('title'))) {
+                        $success = true;
+                    }
+                    break;
             }
-            if(\R::store($category)){
-                $success = true;
-            }
+        } else {
+            $errorMessages[] = '数据结构名称为空';
         }
+
         return $app->json(array(
-            'success' => $success
+            'success' => $success,
+            'error' => $errorMessages
         ));
     }
 
