@@ -11,13 +11,20 @@
             <div class="column">
                 <div class="ui form segment">
                     <div class="field">
+                        <label>修改分类名称</label>
+                        <div class="ui left labeled icon input"><input id="rename-title"></div>
+                    </div>
+                    <div class="field">
+                        <a id="rename" class="ui green submit button" href="#">修改分类名称</a>
+                    </div>
+                    <div class="field">
                         <input type="hidden" id="selected-id">
-                        <label>分类名称</label>
+                        <label>新增分类</label>
 
                         <div class="ui left labeled icon input"><input id="title"></div>
                     </div>
                     <div class="field">
-                        <a id="add-child" class="ui blue submit button" href="#">创建子分类</a>
+                        <a id="add-child" class="ui blue submit button" href="#">创建子分类</a> -
                         <a id="add-pre" class="ui blue submit button" href="#">上方插入分类</a>
                         <a id="add-next" class="ui blue submit button" href="#">下方插入分类</a>
                     </div>
@@ -36,15 +43,32 @@
             }
 
             $.post('/demo/admin/category/add', { 'name': '{{ name }}', 'selected': $('#selected-id').val(), 'position': type, 'title': $('#title').val() }, function (data) {
-                if(data.success){
+                if (data.success) {
                     alert('操作成功');
                     location.reload();
-                }else{
+                } else {
                     alert('出现错误');
                 }
 
                 return false;
-            })
+            });
+        }
+        function rename(){
+            if ($('#rename-title').val() == '') {
+                alert('分类名称不能为空');
+                return false;
+            }
+
+            $.post('/demo/admin/category/rename', { 'name': '{{ name }}', 'selected': $('#selected-id').val(), 'title': $('#rename-title').val() }, function (data) {
+                if (data.success) {
+                    alert('操作成功');
+                    location.reload();
+                } else {
+                    alert('出现错误');
+                }
+
+                return false;
+            });
         }
         $(function () {
             $('#tree').jstree({
@@ -65,7 +89,7 @@
             });
 
             $('#add-pre').on('click', function () {
-                if(!$('#selected-id').val()){
+                if (!$('#selected-id').val()) {
                     alert('请先选择一个分类');
                     return false;
                 }
@@ -73,15 +97,20 @@
             });
 
             $('#add-next').on('click', function () {
-                if(!$('#selected-id').val()){
+                if (!$('#selected-id').val()) {
                     alert('请先选择一个分类');
                     return false;
                 }
                 addNode('next');
             });
 
+            $('#rename').on('click', function () {
+                rename();
+            });
+
             $('#tree').on('changed.jstree', function (e, data) {
                 $('#selected-id').val(data.instance.get_node(data.selected[0]).id);
+                $('#rename-title').val(data.instance.get_node(data.selected[0]).text);
             });
         });
     </script>

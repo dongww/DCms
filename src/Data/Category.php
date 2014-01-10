@@ -27,6 +27,12 @@ class Category
         }
     }
 
+    /**
+     * 判断是否有子分类
+     *
+     * @param $id
+     * @return bool
+     */
     protected function hasChildren($id)
     {
         foreach ($this->category as $row) {
@@ -36,6 +42,12 @@ class Category
         return false;
     }
 
+    /**
+     * 获取树形分类html视图，可指定根节点
+     *
+     * @param int $parent
+     * @return string
+     */
     public function getTreeView($parent = 0)
     {
         $result = '<ul id="jstree_demo_div">';
@@ -60,6 +72,13 @@ class Category
 
     }
 
+    /**
+     * 在选择的分类下添加子分类，如果未选择夫分类，则添加到根
+     *
+     * @param int $parentId
+     * @param $title
+     * @return bool
+     */
     public function addChildNode($parentId = 0, $title)
     {
         $child = \R::dispense($this->name);
@@ -93,6 +112,13 @@ class Category
         return false;
     }
 
+    /**
+     * 在选择的分类上方插入新分类
+     *
+     * @param $selectedId
+     * @param $title
+     * @return bool
+     */
     public function addPreNode($selectedId, $title)
     {
         $selected = \R::load($this->name, $selectedId);
@@ -118,6 +144,13 @@ class Category
         }
     }
 
+    /**
+     * 在选择的分类下方插入新分类
+     *
+     * @param $selectedId
+     * @param $title
+     * @return bool
+     */
     public function addNextNode($selectedId, $title)
     {
         $selected = \R::load($this->name, $selectedId);
@@ -138,6 +171,22 @@ class Category
         $node->title = $title;
         $node->sort = $sort + 1;
         $node->$p = $parent;
+        if (\R::store($node)) {
+            return true;
+        }
+    }
+
+    /**
+     * 重命名某一分类
+     *
+     * @param $nodeId
+     * @param $title
+     * @return bool
+     */
+    public function rename($nodeId, $title)
+    {
+        $node = \R::load($this->name, $nodeId);
+        $node->title = $title;
         if (\R::store($node)) {
             return true;
         }
