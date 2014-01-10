@@ -62,7 +62,7 @@
             $.post('/demo/admin/category/rename', { 'name': '{{ name }}', 'selected': $('#selected-id').val(), 'title': $('#rename-title').val() }, function (data) {
                 if (data.success) {
                     alert('操作成功');
-                    //location.reload();
+                    location.reload();
                 } else {
                     alert('出现错误');
                 }
@@ -74,7 +74,7 @@
             $.post('/demo/admin/category/move', { 'name': '{{ name }}', 'selected': id, 'parent': parent, 'position': position}, function (data) {
                 if (data.success) {
                     alert('操作成功');
-                    location.reload();
+                    //location.reload();
                 } else {
                     alert('出现错误');
                 }
