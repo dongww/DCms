@@ -38,6 +38,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers->get('/category/{name}', array($this, 'category'));
         $controllers->post('/category/add', array($this, 'addCategoryJson'));
         $controllers->post('/category/rename', array($this, 'renameJson'));
+        $controllers->post('/category/move', array($this, 'moveJson'));
 
         return $controllers;
     }
@@ -121,4 +122,28 @@ class AdminControllerProvider implements ControllerProviderInterface
         ));
     }
 
+    public function moveJson(Application $app, Request $request)
+    {
+        $success = false;
+        $errorMessages = array();
+
+        if ($request->get('name')) {
+            $category = new Category($request->get('name'));
+            $s = explode('_', $request->get('selected'));
+            $selectedId = $s[count($s) - 1];
+            $p = explode('_', $request->get('parent'));
+            $parentId = $p[count($p) - 1] == '#' ? null : $p[count($p) - 1];
+
+            if ($category->move($selectedId, $parentId, $request->get('position') + 1)) {
+                $success = true;
+            }
+        } else {
+            $errorMessages[] = '数据结构名称为空';
+        }
+
+        return $app->json(array(
+            'success' => $success,
+            'error' => $errorMessages
+        ));
+    }
 } 

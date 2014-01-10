@@ -62,6 +62,18 @@
             $.post('/demo/admin/category/rename', { 'name': '{{ name }}', 'selected': $('#selected-id').val(), 'title': $('#rename-title').val() }, function (data) {
                 if (data.success) {
                     alert('操作成功');
+                    //location.reload();
+                } else {
+                    alert('出现错误');
+                }
+
+                return false;
+            });
+        }
+        function move(id, parent, position){
+            $.post('/demo/admin/category/move', { 'name': '{{ name }}', 'selected': id, 'parent': parent, 'position': position}, function (data) {
+                if (data.success) {
+                    alert('操作成功');
                     location.reload();
                 } else {
                     alert('出现错误');
@@ -78,7 +90,7 @@
                     "animation": 0
                 },
                 "plugins": [
-                    "contextmenu", "dnd", "wholerow"
+                    "dnd"
                 ]
             });
             $('#tree').on('move_node.jstree', function (e, data) {
@@ -111,6 +123,10 @@
             $('#tree').on('changed.jstree', function (e, data) {
                 $('#selected-id').val(data.instance.get_node(data.selected[0]).id);
                 $('#rename-title').val(data.instance.get_node(data.selected[0]).text);
+            });
+
+            $('#tree').on('move_node.jstree', function(e, data){
+               move(data.node.id, data.parent, data.position);
             });
         });
     </script>

@@ -191,4 +191,59 @@ class Category
             return true;
         }
     }
+
+    /**
+     * 移动一个分类
+     *
+     * @param $nodeId
+     * @param $newParent
+     * @param $newSort
+     * @return bool
+     */
+    public function move($nodeId, $newParent, $newSort)
+    {
+        //todo 分类同名判断
+        $node = \R::load($this->name, $nodeId);
+        $p = $this->name . '_id';
+        $oldParent = $node->$p;
+        $oldSort = $node->sort;
+
+        if ($oldParent) {
+            $whereP = $p . ' = ' . $oldParent;
+        } else {
+            $whereP = $p . ' is null';
+        }
+        $nextAll = \R::findAll($this->name, ' where ' . $whereP . ' and sort > ' . $oldSort . ' ');
+        foreach ($nextAll as $n) {
+            $n->sort = $n->sort - 1;
+            \R::store($n);
+        }
+
+        if ($newParent) {
+            $whereP = $p . ' = ' . $newParent;
+        } else {
+            $whereP = $p . ' is null';
+        }
+        $nextAll = \R::findAll($this->name, ' where ' . $whereP . ' and sort >= ' . $newSort . ' ');
+        foreach ($nextAll as $n) {
+            $n->sort = $n->sort + 1;
+            \R::store($n);
+        }
+
+        $node->$p = $newParent;
+        $node->sort = $newSort;
+        if (\R::store($node)) {
+            return true;
+        }
+    }
+
+    /**
+     * 删除一个分类
+     *
+     * @param $nodeId
+     */
+    public function delete($nodeId)
+    {
+
+    }
 } 
