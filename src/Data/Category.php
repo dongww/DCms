@@ -50,7 +50,7 @@ class Category
      */
     public function getTreeView($parent = 0)
     {
-        $result = '<ul id="jstree_demo_div">';
+        $result = '<ul>';
         if ($this->category) {
             foreach ($this->category as $row) {
                 if ($row['parent_id'] == $parent) {

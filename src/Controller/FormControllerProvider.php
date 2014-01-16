@@ -55,19 +55,24 @@ class FormControllerProvider implements ControllerProviderInterface
             $contentName = $request->request->get('structure');
             $content = \R::dispense($contentName);
 
+            /**
+             * 基本字段
+             */
             foreach ($app['structureConfig'][$contentName]['fields'] as $fieldName => $field) {
                 switch ($field['type']) {
                     case 'image':
-                        $file = new \Data\Image();
-                        $fileName = $file->uploadFile($request->files->get($fieldName));
-                        $content->$fieldName = $fileName;
+                        if($request->files->get($fieldName)){
+                            $file = new \Data\Image();
+                            $fileName = $file->uploadFile($request->files->get($fieldName));
+                            $content->$fieldName = $fileName;
 
-                        $filePath = $file->getPath($fileName);
-                        foreach ($field['size'] as $s) {
-                            $img = Image::make($filePath);
-                            $img->resize($s[0], $s[1], true);
-                            $imgName = $s[0] . '_' . $s[1] . '_' . $fileName;
-                            $img->save($file->getPath($imgName));
+                            $filePath = $file->getPath($fileName);
+                            foreach ($field['size'] as $s) {
+                                $img = Image::make($filePath);
+                                $img->resize($s[0], $s[1], true);
+                                $imgName = $s[0] . '_' . $s[1] . '_' . $fileName;
+                                $img->save($file->getPath($imgName));
+                            }
                         }
                         break;
                     default:
@@ -102,7 +107,19 @@ class FormControllerProvider implements ControllerProviderInterface
              * 多级分类
              */
             if ($app['structureConfig'][$contentName]['relations']) {
-
+                foreach ($app['structureConfig'][$contentName]['category'] as $catName => $cat) {
+                    if ($request->request->get($catName)) {
+                        $arr = array();
+                        foreach($request->request->get($catName) as $id){
+                            $s = explode('_', $id);
+                            $arr[] = $s[count($s) - 1];
+                        }
+                        $cats = \R::find($catName, 'id in (' . \R::genSlots($arr) . ')',
+                            $arr);
+                        $p = 'shared' . ucwords($catName);
+                        $content->$p = $cats;
+                    }
+                }
             }
 
             \R::store($content);

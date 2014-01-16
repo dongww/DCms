@@ -64,7 +64,7 @@ page:
     #分类（无限级）todo:改为 categories
     category:
         pagecategory:
-            mult: false
+            mult: true
             label: 所属分类
 
 class:

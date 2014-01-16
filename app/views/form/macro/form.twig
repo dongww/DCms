@@ -72,22 +72,25 @@
     {#{% endfor %}#}
 {#{% endmacro %}#}
 
-{% macro category(form, name, data) %}
-    <div id="form_{{ form.name }}_{{ name }}_category" style="margin-top: 50px">{{ d_category(name) }}</div>
+{% macro category(form, name, multiple, data) %}
+    <div id="form_{{ form.name }}_{{ name }}_category">{{ d_category(name) }}</div>
+    <div id="form_{{ form.name }}_{{ name }}_category_hidden"></div>
     <script>
         $(function () {
             $('#form_{{ form.name }}_{{ name }}_category').jstree({
                 "core": {
-                    "multiple": false,
+                    "multiple": {{ multiple|default('false') }},
                     "check_callback": true,
                     "animation": 0
                 },
-                "plugins": [
-                    "contextmenu", "dnd", "wholerow"
-                ]
+                "plugins": []
             });
-            $('#tree').on('move_node.jstree', function (e, data) {
-                console.log(data);
+            $('#form_{{ form.name }}_{{ name }}_category').on('changed.jstree', function (e, data) {
+                //console.log(data);
+                $('#form_{{ form.name }}_{{ name }}_category_hidden').html('');
+                $.each(data.selected, function (i, v) {
+                    $('#form_{{ form.name }}_{{ name }}_category_hidden').append('<input type="hidden" name="{{ name }}[]" value="' + v + '">');
+                });
             });
         });
     </script>
