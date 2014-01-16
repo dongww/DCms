@@ -4,7 +4,8 @@
         "symfony/config": "*",
         "symfony/yaml": "*",
         "twig/twig": "*",
-        "symfony/security": "*"
+        "symfony/security": "*",
+        "intervention/image": "*"
     },
     "autoload": {
         "psr-0": {

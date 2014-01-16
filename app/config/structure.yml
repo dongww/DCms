@@ -33,6 +33,10 @@ page:
         image:
             type: image
             label: 图片
+            size: #[宽, 高]
+                small: [180, 100]
+                middle: [280, 280]
+                large: [500, 500]
 #        pagecategory:
 #            type: category
 #            mult: false #若为true，可选择多个分类
@@ -57,7 +61,7 @@ page:
             display: checkboxes
             label: 标签
             order: name
-    #分类（无限级）
+    #分类（无限级）todo:改为 categories
     category:
         pagecategory:
             mult: false

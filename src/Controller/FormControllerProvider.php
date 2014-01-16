@@ -14,6 +14,7 @@ use Silex\Application;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\ControllerProviderInterface;
+use Intervention\Image\Image;
 
 class FormControllerProvider implements ControllerProviderInterface
 {
@@ -55,9 +56,29 @@ class FormControllerProvider implements ControllerProviderInterface
             $content = \R::dispense($contentName);
 
             foreach ($app['structureConfig'][$contentName]['fields'] as $fieldName => $field) {
-                $content->$fieldName = $request->request->get($fieldName);
+                switch ($field['type']) {
+                    case 'image':
+                        $file = new \Data\Image();
+                        $fileName = $file->uploadFile($request->files->get($fieldName));
+                        $content->$fieldName = $fileName;
+
+                        $filePath = $file->getPath($fileName);
+                        foreach ($field['size'] as $s) {
+                            $img = Image::make($filePath);
+                            $img->resize($s[0], $s[1], true);
+                            $imgName = $s[0] . '_' . $s[1] . '_' . $fileName;
+                            $img->save($file->getPath($imgName));
+                        }
+                        break;
+                    default:
+                        $content->$fieldName = $request->request->get($fieldName);
+                }
+
             }
 
+            /**
+             * 关联
+             */
             if ($app['structureConfig'][$contentName]['relations']) {
                 foreach ($app['structureConfig'][$contentName]['relations'] as $relName => $rel) {
                     if ($request->request->get($relName)) {
@@ -77,6 +98,12 @@ class FormControllerProvider implements ControllerProviderInterface
                 }
             }
 
+            /**
+             * 多级分类
+             */
+            if ($app['structureConfig'][$contentName]['relations']) {
+
+            }
 
             \R::store($content);
         }
@@ -84,13 +111,10 @@ class FormControllerProvider implements ControllerProviderInterface
 
     public function ckUpload(Request $request, Application $app)
     {
-        $file = $request->files->get('upload');
-        $toPath = __DIR__ . '/../../web/upload/';
-        $filename = time() . $file->getClientOriginalName();
-        $file->move($toPath, $filename);
-
+        $file = new \Data\Image();
+        $url = $file->getUrl($file->uploadFile($request->files->get('upload')));
         $funcNum = $_GET['CKEditorFuncNum'];
-        $url = '/upload/' . $filename;
+
         return "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($funcNum, '$url', '');</script>";
     }
 } 
