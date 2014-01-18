@@ -2,6 +2,7 @@
 <script src="/js/ckeditor/ckeditor.js"></script>
 <link rel="stylesheet" href="/js/jstree/themes/default/style.min.css"/>
 <script src="/js/jstree/jstree.min.js"></script>
+<script src="/js/jquery.number.min.js"></script>
 <h1 class="simple-form-h1">{% if data.id %}修改{% else %}新建{% endif %}{{ form.title }}</h1>
 <form action="/form/edit" method="post" enctype="multipart/form-data" class="ui form segment">
     <input type="hidden" name="id" value="{{ data.id }}">
@@ -11,12 +12,18 @@
             <label>{{ field.label }}</label>
             {% if field.type == 'text' %}
                 <div class="ui left labeled icon input">{{ dform.text(form, name) }}</div>
+            {% elseif field.type == 'integer' %}
+                <div class="ui left labeled icon input">{{ dform.number(form, name) }}</div>
+            {% elseif field.type == 'float' %}
+                <div class="ui left labeled icon input">{{ dform.number(form, name, true) }}</div>
             {% elseif field.type == 'textarea' %}
                 {{ dform.textarea(form, name) }}
             {% elseif field.type == 'html' %}
                 {{ dform.html(form, name) }}
             {% elseif field.type == 'image' %}
                 <div class="ui left labeled icon input">{{ dform.image(form, name) }}</div>
+            {% elseif field.type == 'imagelist' %}
+                <div class="ui left labeled icon input">{{ dform.imagelist(form, name) }}</div>
             {% endif %}
 
         </div>

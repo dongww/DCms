@@ -3,14 +3,12 @@
     <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}">
 {% endmacro %}
 
-{#整数，例如：142#}
-{% macro integer(form, name) %}
+{#数字，例如：142，123.45 #}
+{% macro number(form, name, float) %}
     <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}">
-{% endmacro %}
-
-{#小数，例如:23.01#}
-{% macro float(form, name) %}
-    <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}">
+    <script>
+        $('#form_{{ form.name }}_{{ name }}').number(true, {% if float %}2{% else %}0{% endif %});
+    </script>
 {% endmacro %}
 
 {#多行文本，纯文本#}
@@ -29,6 +27,29 @@
 {#图片，数据库中保存为路径#}
 {% macro image(form, name) %}
     <input id="form_{{ form.name }}_{{ name }}" type="file" name="{{ name }}">
+{% endmacro %}
+
+{#图片，数据库中保存为路径#}
+{% macro imagelist(form, name) %}
+    <div id="form_{{ form.name }}_{{ name }}_wrap">
+        <div class="inline fields row">
+            <div class="field"><input type="file" name="{{ name }}[]"></div>
+            <div class="field"><a class="ui red button delete">移除</a></div>
+        </div>
+    </div>
+    <a id="form_{{ form.name }}_{{ name }}_append" class="ui red button">追加</a>
+    <script>
+        $('#form_{{ form.name }}_{{ name }}_append').on('click', function () {
+            $('#form_{{ form.name }}_{{ name }}_wrap').append(
+                    '<div class="inline fields row"><div class="field"><input type="file" name="{{ name }}[]"></div><div class="field"><a class="ui red button delete">移除</a></div></div>');
+            $('#form_{{ form.name }}_{{ name }}_wrap .delete').on('click', function () {
+                $(this).parents('.row').remove();
+            });
+        });
+        $('#form_{{ form.name }}_{{ name }}_wrap .delete').on('click', function () {
+            $(this).parents('.row').remove();
+        });
+    </script>
 {% endmacro %}
 
 {#文件，数据库中保存为路径#}
