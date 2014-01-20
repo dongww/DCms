@@ -13,7 +13,7 @@ class Image
     public function uploadFile($file)
     {
         $toPath = __DIR__ . '/../../web/upload/';
-        $filename = time() . $file->getClientOriginalName();
+        $filename = uniqid() . '.' . $file->guessClientExtension();
         $file->move($toPath, $filename);
 
         return $filename;
@@ -21,8 +21,17 @@ class Image
 
     public function uploadFiles($files)
     {
+        $fileNames = array();
+        foreach ($files as $file) {
+            if($file){
+                $fileNames[] = $this->uploadFile($file);
+            }else{
+                continue;
+            }
+
+        }
         //文件名数组
-        return array();
+        return $fileNames;
     }
 
     public function getPath($fileName)

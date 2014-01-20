@@ -29,7 +29,7 @@
     <input id="form_{{ form.name }}_{{ name }}" type="file" name="{{ name }}">
 {% endmacro %}
 
-{#图片，数据库中保存为路径#}
+{#多图上传，数据库中保存为路径#}
 {% macro imagelist(form, name) %}
     <div id="form_{{ form.name }}_{{ name }}_wrap">
         <div class="inline fields row">

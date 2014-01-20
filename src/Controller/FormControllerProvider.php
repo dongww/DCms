@@ -61,7 +61,7 @@ class FormControllerProvider implements ControllerProviderInterface
             foreach ($app['structureConfig'][$contentName]['fields'] as $fieldName => $field) {
                 switch ($field['type']) {
                     case 'image':
-                        if($request->files->get($fieldName)){
+                        if ($request->files->get($fieldName)) {
                             $file = new \Data\Image();
                             $fileName = $file->uploadFile($request->files->get($fieldName));
                             $content->$fieldName = $fileName;
@@ -73,6 +73,29 @@ class FormControllerProvider implements ControllerProviderInterface
                                 $imgName = $s[0] . '_' . $s[1] . '_' . $fileName;
                                 $img->save($file->getPath($imgName));
                             }
+                        }
+                        break;
+                    case 'imagelist':
+                        if ($request->files->get($fieldName)) {
+                            $file = new \Data\Image();
+
+                            $fileNames = $file->uploadFiles($request->files->get($fieldName));
+                            $imgs = array();
+                            foreach ($fileNames as $filename) {
+                                $img = \R::dispense($fieldName);
+                                $img->filename = $filename;
+                                $imgs[] = $img;
+                                $filePath = $file->getPath($filename);
+                                foreach ($field['size'] as $s) {
+                                    $img = Image::make($filePath);
+                                    $img->resize($s[0], $s[1], true);
+                                    $imgName = $s[0] . '_' . $s[1] . '_' . $filename;
+                                    $img->save($file->getPath($imgName));
+                                }
+                            }
+
+                            $imgTableName = 'own' . ucwords($fieldName);
+                            $content->$imgTableName = $imgs;
                         }
                         break;
                     default:
@@ -110,7 +133,7 @@ class FormControllerProvider implements ControllerProviderInterface
                 foreach ($app['structureConfig'][$contentName]['category'] as $catName => $cat) {
                     if ($request->request->get($catName)) {
                         $arr = array();
-                        foreach($request->request->get($catName) as $id){
+                        foreach ($request->request->get($catName) as $id) {
                             $s = explode('_', $id);
                             $arr[] = $s[count($s) - 1];
                         }
