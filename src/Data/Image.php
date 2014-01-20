@@ -39,7 +39,7 @@ class Image
         return __DIR__ . '/../../web/upload/' . $fileName;
     }
 
-    public function getUrl($fileName, $pre)
+    public function getUrl($fileName, $pre = '')
     {
         return '/upload/' . $pre . $fileName;
     }
