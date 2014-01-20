@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace D;
+namespace Core;
 
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 /**
