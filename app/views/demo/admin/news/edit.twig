@@ -1,4 +1,4 @@
 {% extends "demo/admin/base.twig" %}
 {% block main %}
-    {{ d_form('page', 'demo/admin/form/form.twig') }}
+    {{ d_form('page', 'demo/admin/form/form.twig', d_content('page', id)) }}
 {% endblock %}

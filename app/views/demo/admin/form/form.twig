@@ -11,19 +11,19 @@
         <div class="field">
             <label>{{ field.label }}</label>
             {% if field.type == 'text' %}
-                <div class="ui left labeled icon input">{{ dform.text(form, name) }}</div>
+                <div class="ui left labeled icon input">{{ dform.text(form, name, attribute(data, name)) }}</div>
             {% elseif field.type == 'integer' %}
-                <div class="ui left labeled icon input">{{ dform.number(form, name) }}</div>
+                <div class="ui left labeled icon input">{{ dform.number(form, name, false, attribute(data, name)) }}</div>
             {% elseif field.type == 'float' %}
-                <div class="ui left labeled icon input">{{ dform.number(form, name, true) }}</div>
+                <div class="ui left labeled icon input">{{ dform.number(form, name, true, attribute(data, name)) }}</div>
             {% elseif field.type == 'textarea' %}
-                {{ dform.textarea(form, name) }}
+                {{ dform.textarea(form, name, attribute(data, name)) }}
             {% elseif field.type == 'html' %}
-                {{ dform.html(form, name) }}
+                {{ dform.html(form, name, attribute(data, name)) }}
             {% elseif field.type == 'image' %}
                 <div class="ui left labeled icon input">{{ dform.image(form, name) }}</div>
             {% elseif field.type == 'imagelist' %}
-                <div class="ui left labeled icon input">{{ dform.imagelist(form, name) }}</div>
+                <div class="ui left labeled icon input">{{ dform.imagelist(form, name, data) }}</div>
             {% endif %}
 
         </div>
@@ -34,13 +34,14 @@
             {% if rel.type == 'm2o' %}
                 {% if rel.display == 'select' %}
                     <div class="ui selection dropdown">
-                        <input type="hidden" name="{{ name }}">
+                        {% set p = d_parent(data, name) %}
+                        <input type="hidden" name="{{ name }}" value="{{ p.id }}">
 
                         <div class="text">请选择</div>
                         <i class="dropdown icon"></i>
 
                         <div class="menu">
-                            {% for item in d_content(name) %}
+                            {% for item in d_list(name) %}
                                 <div class="item" data-value="{{ item.id }}">{{ item.title }}</div>
                             {% endfor %}
                         </div>
@@ -48,13 +49,18 @@
                 {% endif %}
             {% elseif rel.type == 'm2m' %}
                 {% if rel.display == 'checkboxes' %}
-                    {#<div>{{ rel.label }}：{{ dform.checkboxes(form, name, d_content(name)) }}</div>#}
-                    {% for data in d_content(name) %}
+                    {#{{ dump(d_shared(data, name)) }}#}
+                    {% for data in d_list(name) %}
                         <div class="ui slider checkbox">
                             {{ dform.checkbox(form, name, data) }}
                             <label for="form_{{ form.name }}_{{ name }}_{{ data.id }}">{{ data.name }}</label>
                         </div>
                     {% endfor %}
+                    <script>
+                        {% for data in d_shared(data, name) %}
+                            $('#form_{{ form.name }}_{{ name }}_{{ data.id }}').attr('checked', true);
+                        {% endfor %}
+                    </script>
                 {% endif %}
             {% endif %}
         </div>
@@ -62,8 +68,9 @@
     {% for name, cat in form.category %}
         <div class="field">
             <label>{{ cat.label }}</label>
-            <a class="ui blue submit button small" href="/demo/admin/category/{{ name }}" target="_blank">分类管理</a> <span style="color:red">提示：按住Ctrl键可多选</span>
-            {{ dform.category(form, name, cat.mult) }}
+            <a class="ui blue submit button small" href="/demo/admin/category/{{ name }}" target="_blank">分类管理</a> <span
+                    style="color:red">提示：按住Ctrl键可多选</span>
+            {{ dform.category(form, name, cat.mult, d_shared(data, name)) }}
         </div>
     {% endfor %}
     <button class="ui red submit button">确定提交</button>
@@ -71,3 +78,4 @@
 <script>
     $('.ui.radio.checkbox').checkbox();
 </script>
+{#{{ dump(data) }}#}

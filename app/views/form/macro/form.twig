@@ -1,24 +1,24 @@
 {#单行文本#}
-{% macro text(form, name) %}
-    <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}">
+{% macro text(form, name, value) %}
+    <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}" value="{{ value }}">
 {% endmacro %}
 
 {#数字，例如：142，123.45 #}
-{% macro number(form, name, float) %}
-    <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}">
+{% macro number(form, name, float, value) %}
+    <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}" value="{{ value }}">
     <script>
-        $('#form_{{ form.name }}_{{ name }}').number(true, {% if float %}2{% else %}0{% endif %});
+        $('#form_{{ form.name }}_{{ name }}').number(true, {% if float %}2{% else %}0{% endif %}, '.', '');
     </script>
 {% endmacro %}
 
 {#多行文本，纯文本#}
-{% macro textarea(form, name) %}
-    <textarea id="form_{{ form.name }}_{{ name }}" name="{{ name }}"></textarea>
+{% macro textarea(form, name, value) %}
+    <textarea id="form_{{ form.name }}_{{ name }}" name="{{ name }}">{{ value }}</textarea>
 {% endmacro %}
 
 {#富文本内容，图文表格等排版#}
-{% macro html(form, name) %}
-    <textarea id="form_{{ form.name }}_{{ name }}" name="{{ name }}"></textarea>
+{% macro html(form, name, value) %}
+    <textarea id="form_{{ form.name }}_{{ name }}" name="{{ name }}">{{ value }}</textarea>
     <script>
         CKEDITOR.replace("{{ name }}");
     </script>
@@ -30,7 +30,12 @@
 {% endmacro %}
 
 {#多图上传，数据库中保存为路径#}
-{% macro imagelist(form, name) %}
+{% macro imagelist(form, name, data) %}
+    <div>
+        {% for v in d_imagelist(data, form.name, name, 'small') %}
+            <img src=" {{ v.url }}">
+        {% endfor %}
+    </div>
     <div id="form_{{ form.name }}_{{ name }}_wrap">
         <div class="inline fields row">
             <div class="field"><input type="file" name="{{ name }}[]"></div>
@@ -106,8 +111,13 @@
                 },
                 "plugins": []
             });
+
+            {% for v in data %}
+                $('#form_{{ form.name }}_{{ name }}_category').jstree('select_node', 'category_{{ name }}_{{ v.id }}');
+                $('#form_{{ form.name }}_{{ name }}_category_hidden').append('<input type="hidden" name="{{ name }}[]" value="category_{{ name }}_{{ v.id }}">');
+            {% endfor %}
+
             $('#form_{{ form.name }}_{{ name }}_category').on('changed.jstree', function (e, data) {
-                //console.log(data);
                 $('#form_{{ form.name }}_{{ name }}_category_hidden').html('');
                 $.each(data.selected, function (i, v) {
                     $('#form_{{ form.name }}_{{ name }}_category_hidden').append('<input type="hidden" name="{{ name }}[]" value="' + v + '">');

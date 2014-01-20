@@ -45,13 +45,14 @@ class AdminControllerProvider implements ControllerProviderInterface
 
     public function index(Application $app, Request $request)
     {
-        //return 'hello admin ' . $request->get('name');
         return $app['twig']->render('demo/admin/index.twig');
     }
 
     public function editNews(Application $app, Request $request)
     {
-        return $app['twig']->render('demo/admin/news/edit.twig');
+        return $app['twig']->render('demo/admin/news/edit.twig', array(
+            'id'    =>  $request->get('id')
+        ));
     }
 
     public function category(Application $app, Request $request, $name)

@@ -36,6 +36,11 @@ class Extension extends \Twig_Extension
                 'is_safe' => array('html')
             )),
             new \Twig_SimpleFunction('d_content', array($this, 'getContent')),
+            new \Twig_SimpleFunction('d_parent', array($this, 'getParent')),
+            new \Twig_SimpleFunction('d_shared', array($this, 'getShared')),
+            new \Twig_SimpleFunction('d_own', array($this, 'getOwn')),
+            new \Twig_SimpleFunction('d_imagelist', array($this, 'getImageList')),
+            new \Twig_SimpleFunction('d_list', array($this, 'getList')),
             new \Twig_SimpleFunction('d_category', array($this, 'getCategory')),
         );
     }
@@ -68,7 +73,7 @@ class Extension extends \Twig_Extension
      * @param $options 选项
      * @return array
      */
-    public function getContent($name, $options = array())
+    public function getList($name, $options = array())
     {
         /**
          * 如果 id 有值
@@ -84,6 +89,58 @@ class Extension extends \Twig_Extension
         }
 
         return \R::findAll($name);
+    }
+
+    /**
+     * 根据id获得一个内容
+     *
+     * @param $name
+     * @param $id
+     * @return \RedBean_OODBBean
+     */
+    public function getContent($name, $id)
+    {
+        return $data = \R::load($name, $id);
+    }
+
+    /**
+     * 获得某个内容所属的关联内容，例如某个商品的分类
+     *
+     * @param $content
+     * @param $parentName
+     */
+    public function getParent($content, $parentName)
+    {
+        return $content->$parentName;
+    }
+
+    public function getShared($content, $sharedName)
+    {
+        $name = 'shared' . ucwords($sharedName);
+        return $content->$name;
+    }
+
+    public function getOwn($content, $ownName)
+    {
+        $name = 'own' . ucwords($ownName);
+        return $content->$name;
+    }
+
+    public function getImageList($content, $contentName, $imageList, $size = null)
+    {
+        $list = $this->getOwn($content, $imageList);
+        $images = array();
+        $file = new \Data\Image();
+
+        $imgSize = $this->app['structureConfig'][$contentName]['fields'][$imageList]['size'][$size];
+        foreach ($list as $i) {
+            $images[] = array(
+                'id' => $i->id,
+                'filename' => $i->filename,
+                'url' => $file->getUrl($i->filename, $imgSize[0] . '_' . $imgSize[1] . '_'),
+            );
+        }
+        return $images;
     }
 
     /**
