@@ -32,7 +32,7 @@
 {#多图上传，数据库中保存为路径#}
 {% macro imagelist(form, name, data) %}
     <div>
-        {% for v in d_imagelist(data, form.name, name, 'small') %}
+        {% for v in d_imagelist(data, name, 'small') %}
             <img src=" {{ v.url }}">
         {% endfor %}
     </div>

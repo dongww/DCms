@@ -126,13 +126,13 @@ class Extension extends \Twig_Extension
         return $content->$name;
     }
 
-    public function getImageList($content, $contentName, $imageList, $size = null)
+    public function getImageList($content, $imageList, $size = null)
     {
         $list = $this->getOwn($content, $imageList);
         $images = array();
         $file = new \Data\Image();
 
-        $imgSize = $this->app['structureConfig'][$contentName]['fields'][$imageList]['size'][$size];
+        $imgSize = $this->app['structureConfig'][$content->getMeta('type')]['fields'][$imageList]['size'][$size];
         foreach ($list as $i) {
             $images[] = array(
                 'id' => $i->id,
