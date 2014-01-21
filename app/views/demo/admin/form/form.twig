@@ -24,6 +24,8 @@
                 <div class="ui left labeled icon input">{{ dform.image(form, name) }}</div>
             {% elseif field.type == 'imagelist' %}
                 <div class="ui left labeled icon input">{{ dform.imagelist(form, name, data) }}</div>
+            {% elseif field.type == 'date' %}
+                <div class="ui left labeled icon input">{{ dform.date(form, name, attribute(data, name)) }}</div>
             {% endif %}
 
         </div>
@@ -77,5 +79,6 @@
 </form>
 <script>
     $('.ui.radio.checkbox').checkbox();
+    $('.date').datepicker($.datepicker.regional[ "zh-CN" ]);
 </script>
 {#{{ dump(data) }}#}

@@ -74,7 +74,8 @@
 
 {#日期#}
 {% macro date(form, name) %}
-    <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}">
+    <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}" value="{{ value }}" class="date">
+
 {% endmacro %}
 
 {% macro select(form, name, data) %}

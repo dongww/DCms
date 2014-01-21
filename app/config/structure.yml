@@ -36,6 +36,9 @@ page:
         float:
             type: float
             label: 小数
+        publish:
+            type: date
+            label: 发布日期
         image:
             type: image
             label: 图片
