@@ -31,11 +31,14 @@
 
 {#多图上传，数据库中保存为路径#}
 {% macro imagelist(form, name, data) %}
-    <div>
-        {% for v in d_imagelist(data, name, 'small') %}
+    {% for v in d_imagelist(data, name, 'small') %}
+        <div class="ui left floated image">
+            <a class="ui right red corner label delete" content="{{ name }}" value="{{ v.id }}">
+                <i class="delete icon"></i>
+            </a>
             <img src=" {{ v.url }}">
-        {% endfor %}
-    </div>
+        </div>
+    {% endfor %}
     <div id="form_{{ form.name }}_{{ name }}_wrap">
         <div class="inline fields row">
             <div class="field"><input type="file" name="{{ name }}[]"></div>
@@ -73,7 +76,7 @@
 {% endmacro %}
 
 {#日期#}
-{% macro date(form, name) %}
+{% macro date(form, name, value) %}
     <input id="form_{{ form.name }}_{{ name }}" type="text" name="{{ name }}" value="{{ value }}" class="date">
 
 {% endmacro %}
@@ -114,8 +117,8 @@
             });
 
             {% for v in data %}
-                $('#form_{{ form.name }}_{{ name }}_category').jstree('select_node', 'category_{{ name }}_{{ v.id }}');
-                $('#form_{{ form.name }}_{{ name }}_category_hidden').append('<input type="hidden" name="{{ name }}[]" value="category_{{ name }}_{{ v.id }}">');
+            $('#form_{{ form.name }}_{{ name }}_category').jstree('select_node', 'category_{{ name }}_{{ v.id }}');
+            $('#form_{{ form.name }}_{{ name }}_category_hidden').append('<input type="hidden" name="{{ name }}[]" value="category_{{ name }}_{{ v.id }}">');
             {% endfor %}
 
             $('#form_{{ form.name }}_{{ name }}_category').on('changed.jstree', function (e, data) {

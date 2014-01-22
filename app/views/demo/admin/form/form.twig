@@ -21,9 +21,9 @@
             {% elseif field.type == 'html' %}
                 {{ dform.html(form, name, attribute(data, name)) }}
             {% elseif field.type == 'image' %}
-                <div class="ui left labeled icon input">{{ dform.image(form, name) }}</div>
+                <div class="ui left input">{{ dform.image(form, name) }}</div>
             {% elseif field.type == 'imagelist' %}
-                <div class="ui left labeled icon input">{{ dform.imagelist(form, name, data) }}</div>
+                <div class="ui left">{{ dform.imagelist(form, name, data) }}</div>
             {% elseif field.type == 'date' %}
                 <div class="ui left labeled icon input">{{ dform.date(form, name, attribute(data, name)) }}</div>
             {% endif %}
@@ -34,51 +34,74 @@
         <div class="field">
             <label>{{ rel.label }}</label>
             {% if rel.type == 'm2o' %}
-                {% if rel.display == 'select' %}
-                    <div class="ui selection dropdown">
-                        {% set p = d_parent(data, name) %}
-                        <input type="hidden" name="{{ name }}" value="{{ p.id }}">
+            {% if rel.display == 'select' %}
+                <div class="ui selection dropdown">
+                    {% set p = d_parent(data, name) %}
+                    <input type="hidden" name="{{ name }}" value="{{ p.id }}">
 
-                        <div class="text">请选择</div>
-                        <i class="dropdown icon"></i>
+                    <div class="text">请选择</div>
+                    <i class="dropdown icon"></i>
 
-                        <div class="menu">
-                            {% for item in d_list(name) %}
-                                <div class="item" data-value="{{ item.id }}">{{ item.title }}</div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-            {% elseif rel.type == 'm2m' %}
-                {% if rel.display == 'checkboxes' %}
-                    {#{{ dump(d_shared(data, name)) }}#}
-                    {% for data in d_list(name) %}
-                        <div class="ui slider checkbox">
-                            {{ dform.checkbox(form, name, data) }}
-                            <label for="form_{{ form.name }}_{{ name }}_{{ data.id }}">{{ data.name }}</label>
-                        </div>
-                    {% endfor %}
-                    <script>
-                        {% for data in d_shared(data, name) %}
-                            $('#form_{{ form.name }}_{{ name }}_{{ data.id }}').attr('checked', true);
+                    <div class="menu">
+                        {% for item in d_list(name) %}
+                            <div class="item" data-value="{{ item.id }}">{{ item.title }}</div>
                         {% endfor %}
-                    </script>
-                {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+                {% elseif rel.type == 'm2m' %}
+            {% if rel.display == 'checkboxes' %}
+                {#{{ dump(d_shared(data, name)) }}#}
+                {% for data in d_list(name) %}
+                <div class="ui slider checkbox">
+                    {{ dform.checkbox(form, name, data) }}
+                    <label for="form_{{ form.name }}_{{ name }}_{{ data.id }}">{{ data.name }}</label>
+                </div>
+                {% endfor %}
+                <script>
+                    {% for data in d_shared(data, name) %}
+                    $('#form_{{ form.name }}_{{ name }}_{{ data.id }}').attr('checked', true);
+                    {% endfor %}
+                </script>
+            {% endif %}
             {% endif %}
         </div>
     {% endfor %}
     {% for name, cat in form.category %}
         <div class="field">
             <label>{{ cat.label }}</label>
-            <a class="ui blue submit button small" href="/admin/category/{{ name }}" target="_blank">分类管理</a> <span
-                    style="color:red">提示：按住Ctrl键可多选</span>
+            <a class="ui blue submit button small" href="/admin/category/{{ name }}" target="_blank">分类管理</a>
+            {% if cat.mult %}<span style="color:red">提示：按住Ctrl键可多选</span>{% endif %}
             {{ dform.category(form, name, cat.mult, d_shared(data, name)) }}
         </div>
     {% endfor %}
     <button class="ui red submit button">确定提交</button>
 </form>
+<style>
+    .ui.corner.label{
+        z-index: 1;
+    }
+</style>
 <script>
     $('.ui.radio.checkbox').checkbox();
     $('.date').datepicker($.datepicker.regional[ "zh-CN" ]);
+    $('.image a.delete').on('click', function(){
+        if(confirm('确定删除？')){
+            var $this = $(this);
+            $.get('/form/imagelist/delete/'+ $(this).attr('content') + '/' + $(this).attr('value'), function (data) {
+                if (data.success) {
+                    alert('操作成功');
+                    $this.parent().remove();
+                } else {
+                    alert('出现错误');
+                }
+
+                return false;
+            });
+        }else{
+            return false;
+        }
+    });
+    //$('.ui-datepicker *').css('z-index', '1000');
 </script>
 {#{{ dump(data) }}#}

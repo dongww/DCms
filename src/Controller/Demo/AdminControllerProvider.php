@@ -33,12 +33,12 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('', array($this, 'index'));
-        $controllers->get('/news/edit', array($this, 'editNews'));
-        $controllers->get('/news/edit/{id}', array($this, 'editNews'));
+        $controllers->get('/{structure}/edit', array($this, 'editContent'));
+        $controllers->get('/{structure}/edit/{id}', array($this, 'editContent'));
         $controllers->get('/category/{name}', array($this, 'category'));
         $controllers->post('/category/add', array($this, 'addCategoryJson'));
-        $controllers->post('/category/rename', array($this, 'renameJson'));
-        $controllers->post('/category/move', array($this, 'moveJson'));
+        $controllers->post('/category/rename', array($this, 'renameCategoryJson'));
+        $controllers->post('/category/move', array($this, 'moveCategoryJson'));
 
         return $controllers;
     }
@@ -48,10 +48,11 @@ class AdminControllerProvider implements ControllerProviderInterface
         return $app['twig']->render('demo/admin/index.twig');
     }
 
-    public function editNews(Application $app, Request $request)
+    public function editContent(Application $app, Request $request, $structure)
     {
-        return $app['twig']->render('demo/admin/news/edit.twig', array(
-            'id'    =>  $request->get('id')
+        return $app['twig']->render('demo/admin/content/edit.twig', array(
+            'id'    =>  $request->get('id'),
+            'structure' =>  $structure
         ));
     }
 
@@ -99,7 +100,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         ));
     }
 
-    public function renameJson(Application $app, Request $request)
+    public function renameCategoryJson(Application $app, Request $request)
     {
         $success = false;
         $errorMessages = array();
@@ -123,7 +124,7 @@ class AdminControllerProvider implements ControllerProviderInterface
         ));
     }
 
-    public function moveJson(Application $app, Request $request)
+    public function moveCategoryJson(Application $app, Request $request)
     {
         $success = false;
         $errorMessages = array();
@@ -147,4 +148,6 @@ class AdminControllerProvider implements ControllerProviderInterface
             'error' => $errorMessages
         ));
     }
+
+
 } 

@@ -30,10 +30,10 @@ class FormControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/edit', array($this, 'edit'))
-            //->method('GET|POST')
             ->bind('content_edit');
         $controllers->post('/ck_upload', array($this, 'ckUpload'))
             ->bind('ck_upload');
+        $controllers->get('/imagelist/delete/{content}/{id}', array($this, 'deleteImagelistJson'));
 
         return $controllers;
     }
@@ -147,6 +147,29 @@ class FormControllerProvider implements ControllerProviderInterface
 
             \R::store($content);
         }
+    }
+
+    /**
+     * 删除imagelist中的某一个图片
+     *
+     * @param Application $app
+     * @param Request $request
+     * @param $content
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function deleteImagelistJson(Application $app, Request $request, $content, $id)
+    {
+        $success = false;
+        $errorMessages = array();
+
+        $bean = \R::load($content, $id);
+        \R::trash($bean);
+
+        return $app->json(array(
+            'success' => true,
+            'error' => $errorMessages
+        ));
     }
 
     public function ckUpload(Request $request, Application $app)
