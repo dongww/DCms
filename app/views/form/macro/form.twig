@@ -42,14 +42,24 @@
     <div id="form_{{ form.name }}_{{ name }}_wrap">
         <div class="inline fields row">
             <div class="field"><input type="file" name="{{ name }}[]"></div>
-            <div class="field"><a class="ui red button delete">移除</a></div>
+            <div class="field">
+                <a class="ui icon red button delete">
+                    <i class="delete icon"></i>
+                </a>
+            </div>
         </div>
     </div>
-    <a id="form_{{ form.name }}_{{ name }}_append" class="ui red button">追加</a>
+    <a id="form_{{ form.name }}_{{ name }}_append" class="ui labeled icon button">
+        <i class="add icon"></i>
+        追加一张
+    </a>
     <script>
         $('#form_{{ form.name }}_{{ name }}_append').on('click', function () {
             $('#form_{{ form.name }}_{{ name }}_wrap').append(
-                    '<div class="inline fields row"><div class="field"><input type="file" name="{{ name }}[]"></div><div class="field"><a class="ui red button delete">移除</a></div></div>');
+                    '<div class="inline fields row">' +
+                            '<div class="field"><input type="file" name="{{ name }}[]"></div>' +
+                            '<div class="field"><a class="ui icon red button delete"><i class="delete icon"></i></a></div>' +
+                            '</div>');
             $('#form_{{ form.name }}_{{ name }}_wrap .delete').on('click', function () {
                 $(this).parents('.row').remove();
             });

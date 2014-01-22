@@ -70,8 +70,11 @@
     {% for name, cat in form.category %}
         <div class="field">
             <label>{{ cat.label }}</label>
-            <a class="ui blue submit button small" href="/admin/category/{{ name }}" target="_blank">分类管理</a>
-            {% if cat.mult %}<span style="color:red">提示：按住Ctrl键可多选</span>{% endif %}
+            <a class="ui labeled icon submit button small" href="/admin/category/{{ name }}" target="_blank"><i class="sitemap icon"></i>分类管理</a>
+            {% if cat.mult %}
+                <a class="ui red label">
+                    提示：按住Ctrl键可多选
+            </a>{% endif %}
             {{ dform.category(form, name, cat.mult, d_shared(data, name)) }}
         </div>
     {% endfor %}
