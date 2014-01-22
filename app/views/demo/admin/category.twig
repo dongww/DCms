@@ -42,7 +42,7 @@
                 return false;
             }
 
-            $.post('/demo/admin/category/add', { 'name': '{{ name }}', 'selected': $('#selected-id').val(), 'position': type, 'title': $('#title').val() }, function (data) {
+            $.post('/admin/category/add', { 'name': '{{ name }}', 'selected': $('#selected-id').val(), 'position': type, 'title': $('#title').val() }, function (data) {
                 if (data.success) {
                     alert('操作成功');
                     location.reload();
@@ -59,7 +59,7 @@
                 return false;
             }
 
-            $.post('/demo/admin/category/rename', { 'name': '{{ name }}', 'selected': $('#selected-id').val(), 'title': $('#rename-title').val() }, function (data) {
+            $.post('/admin/category/rename', { 'name': '{{ name }}', 'selected': $('#selected-id').val(), 'title': $('#rename-title').val() }, function (data) {
                 if (data.success) {
                     alert('操作成功');
                     location.reload();
@@ -71,7 +71,7 @@
             });
         }
         function move(id, parent, position){
-            $.post('/demo/admin/category/move', { 'name': '{{ name }}', 'selected': id, 'parent': parent, 'position': position}, function (data) {
+            $.post('/admin/category/move', { 'name': '{{ name }}', 'selected': id, 'parent': parent, 'position': position}, function (data) {
                 if (data.success) {
                     alert('操作成功');
                     //location.reload();

@@ -123,9 +123,6 @@ class Application extends baseApp
     public function initController()
     {
         $this->mount('/form', new \Controller\FormControllerProvider());
-
-        if ($this['debug']) {
-            $this->mount('/demo/admin', new \Controller\Demo\AdminControllerProvider());
-        }
+        $this->mount('/admin', new \Controller\Demo\AdminControllerProvider());
     }
 } 
