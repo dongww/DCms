@@ -47,106 +47,100 @@ class FormControllerProvider implements ControllerProviderInterface
      */
     public function edit(Application $app, Request $request)
     {
+        $contentName = $request->request->get('structure');
         if ($request->request->get('id')) {
-            //todo:id存在，为修改模式
+            $content = \R::load($contentName, $request->request->get('id'));
         } else {
-            //id不存在，为新建模式
-
-            $contentName = $request->request->get('structure');
             $content = \R::dispense($contentName);
+        }
+        /**
+         * 基本字段
+         */
+        foreach ($app['structureConfig'][$contentName]['fields'] as $fieldName => $field) {
+            switch ($field['type']) {
+                case 'image':
+                    if ($request->files->get($fieldName)) {
+                        $file = new \Data\Image();
+                        $fileName = $file->uploadFile($request->files->get($fieldName));
+                        $content->$fieldName = $fileName;
 
-            /**
-             * 基本字段
-             */
-            foreach ($app['structureConfig'][$contentName]['fields'] as $fieldName => $field) {
-                switch ($field['type']) {
-                    case 'image':
-                        if ($request->files->get($fieldName)) {
-                            $file = new \Data\Image();
-                            $fileName = $file->uploadFile($request->files->get($fieldName));
-                            $content->$fieldName = $fileName;
+                        $filePath = $file->getPath($fileName);
+                        foreach ($field['size'] as $s) {
+                            $img = Image::make($filePath);
+                            $img->resize($s[0], $s[1], true);
+                            $imgName = $s[0] . '_' . $s[1] . '_' . $fileName;
+                            $img->save($file->getPath($imgName));
+                        }
+                    }
+                    break;
+                case 'imagelist':
+                    if ($request->files->get($fieldName)) {
+                        $file = new \Data\Image();
 
-                            $filePath = $file->getPath($fileName);
+                        $fileNames = $file->uploadFiles($request->files->get($fieldName));
+                        $imgTableName = 'own' . ucwords($fieldName);
+                        foreach ($fileNames as $filename) {
+                            $img = \R::dispense($fieldName);
+                            $img->filename = $filename;
+                            array_push($content->$imgTableName, $img);
+                            $filePath = $file->getPath($filename);
                             foreach ($field['size'] as $s) {
                                 $img = Image::make($filePath);
                                 $img->resize($s[0], $s[1], true);
-                                $imgName = $s[0] . '_' . $s[1] . '_' . $fileName;
+                                $imgName = $s[0] . '_' . $s[1] . '_' . $filename;
                                 $img->save($file->getPath($imgName));
                             }
                         }
-                        break;
-                    case 'imagelist':
-                        if ($request->files->get($fieldName)) {
-                            $file = new \Data\Image();
-
-                            $fileNames = $file->uploadFiles($request->files->get($fieldName));
-                            $imgs = array();
-                            foreach ($fileNames as $filename) {
-                                $img = \R::dispense($fieldName);
-                                $img->filename = $filename;
-                                $imgs[] = $img;
-                                $filePath = $file->getPath($filename);
-                                foreach ($field['size'] as $s) {
-                                    $img = Image::make($filePath);
-                                    $img->resize($s[0], $s[1], true);
-                                    $imgName = $s[0] . '_' . $s[1] . '_' . $filename;
-                                    $img->save($file->getPath($imgName));
-                                }
-                            }
-
-                            $imgTableName = 'own' . ucwords($fieldName);
-                            $content->$imgTableName = $imgs;
-                        }
-                        break;
-                    default:
-                        $content->$fieldName = $request->request->get($fieldName);
-                }
-
-            }
-
-            /**
-             * 关联
-             */
-            if ($app['structureConfig'][$contentName]['relations']) {
-                foreach ($app['structureConfig'][$contentName]['relations'] as $relName => $rel) {
-                    if ($request->request->get($relName)) {
-                        switch ($rel['type']) {
-                            case 'm2o':
-                                $obj = \R::load($relName, $request->request->get($relName));
-                                $content->$relName = $obj;
-                                break;
-                            case 'm2m':
-                                $rels = \R::find($relName, 'id in (' . \R::genSlots($request->request->get($relName)) . ')',
-                                    $request->request->get($relName));
-                                $p = 'shared' . ucwords($relName);
-                                $content->$p = $rels;
-                                break;
-                        }
                     }
-                }
+                    break;
+                default:
+                    $content->$fieldName = $request->request->get($fieldName);
             }
 
-            /**
-             * 多级分类
-             */
-            if ($app['structureConfig'][$contentName]['relations']) {
-                foreach ($app['structureConfig'][$contentName]['category'] as $catName => $cat) {
-                    if ($request->request->get($catName)) {
-                        $arr = array();
-                        foreach ($request->request->get($catName) as $id) {
-                            $s = explode('_', $id);
-                            $arr[] = $s[count($s) - 1];
-                        }
-                        $cats = \R::find($catName, 'id in (' . \R::genSlots($arr) . ')',
-                            $arr);
-                        $p = 'shared' . ucwords($catName);
-                        $content->$p = $cats;
-                    }
-                }
-            }
-
-            \R::store($content);
         }
+
+        /**
+         * 关联
+         */
+        if ($app['structureConfig'][$contentName]['relations']) {
+            foreach ($app['structureConfig'][$contentName]['relations'] as $relName => $rel) {
+                if ($request->request->get($relName)) {
+                    switch ($rel['type']) {
+                        case 'm2o':
+                            $obj = \R::load($relName, $request->request->get($relName));
+                            $content->$relName = $obj;
+                            break;
+                        case 'm2m':
+                            $rels = \R::find($relName, 'id in (' . \R::genSlots($request->request->get($relName)) . ')',
+                                $request->request->get($relName));
+                            $p = 'shared' . ucwords($relName);
+                            $content->$p = $rels;
+                            break;
+                    }
+                }
+            }
+        }
+
+        /**
+         * 多级分类
+         */
+        if ($app['structureConfig'][$contentName]['relations']) {
+            foreach ($app['structureConfig'][$contentName]['category'] as $catName => $cat) {
+                if ($request->request->get($catName)) {
+                    $arr = array();
+                    foreach ($request->request->get($catName) as $id) {
+                        $s = explode('_', $id);
+                        $arr[] = $s[count($s) - 1];
+                    }
+                    $cats = \R::find($catName, 'id in (' . \R::genSlots($arr) . ')',
+                        $arr);
+                    $p = 'shared' . ucwords($catName);
+                    $content->$p = $cats;
+                }
+            }
+        }
+
+        \R::store($content);
     }
 
     /**
