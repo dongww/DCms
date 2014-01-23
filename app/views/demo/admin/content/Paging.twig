@@ -1,0 +1,20 @@
+<div class="ui" style="text-align: right">
+    <div class="ui pagination menu">
+        {% if page > 1 %}
+            <a class="icon item" href="{{ path }}">
+                <i class="icon backward"></i>
+            </a>
+            <a class="icon item" href="{{ path }}/{{ page - 1 }}">
+                <i class="icon left arrow"></i>
+            </a>
+        {% endif %}
+        <a class="icon item">
+            当前第 {{ page }} 页
+        </a>
+        {% if page < pages %}
+            <a class="icon item" href="{{ path }}/{{ page + 1 }}">
+                <i class="icon right arrow"></i>
+            </a>
+        {% endif %}
+    </div>
+</div>
