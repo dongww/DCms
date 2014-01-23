@@ -1,6 +1,6 @@
 {% extends "demo/admin/base.twig" %}
 {% block main %}
-    {% set data = d_list(structure) %}
+    {% set data = d_list(structure, {'limit': 3, 'page': page}) %}
     <h1>{{ app['structureConfig'][structure]['title'] }}列表</h1>
     <table class="ui table segment compact small">
         <thead>
@@ -34,4 +34,5 @@
         {% endfor %}
         </tbody>
     </table>
+    {{ d_paging('/admin/' ~ structure ~ '/list', structure, page, 3) }}
 {% endblock %}

@@ -35,6 +35,9 @@ class Extension extends \Twig_Extension
             new \Twig_SimpleFunction('d_form', array($this, 'getForm'), array(
                 'is_safe' => array('html')
             )),
+            new \Twig_SimpleFunction('d_paging', array($this, 'getPaging'), array(
+                'is_safe' => array('html')
+            )),
             new \Twig_SimpleFunction('d_content', array($this, 'getContent')),
             new \Twig_SimpleFunction('d_parent', array($this, 'getParent')),
             new \Twig_SimpleFunction('d_shared', array($this, 'getShared')),
@@ -57,7 +60,19 @@ class Extension extends \Twig_Extension
     {
         return $this->app['twig']->render($tplFile, array(
             'form' => $this->app['structureConfig'][$name],
-            'data' => $data
+            'data' => $data,
+            'path'   => $_SERVER["PHP_SELF"]
+        ));
+    }
+
+    public function getPaging($path, $name, $page = 1, $limit = 10, $tplFile = 'demo/admin/content/paging.twig')
+    {
+        $count = \R::count($name);
+
+        return $this->app['twig']->render($tplFile, array(
+            'page'  =>  $page,
+            'pages' =>  ceil($count / $limit),
+            'path'  =>  $path
         ));
     }
 
@@ -88,19 +103,19 @@ class Extension extends \Twig_Extension
 
         if ($o['by']) {
             $by = sprintf(' order by %s', $o['by']);
-        }else{
+        } else {
             $by = ' order by created';
         }
 
         if ($o['order']) {
             $order = ' ' . $o['order'];
-        }else{
+        } else {
             $order = ' desc';
         }
 
         $sql = $select . $by . $order . $limit;
         $rows = \R::getAll($sql);
-        return \R::convertToBeans('author',$rows);
+        return \R::convertToBeans('author', $rows);
     }
 
     /**
