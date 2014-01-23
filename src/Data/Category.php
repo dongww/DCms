@@ -73,7 +73,7 @@ class Category
     }
 
     /**
-     * 在选择的分类下添加子分类，如果未选择夫分类，则添加到根
+     * 在选择的分类下添加子分类，如果未选择父分类，则添加到根
      *
      * @param int $parentId
      * @param $title
