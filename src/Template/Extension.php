@@ -64,9 +64,8 @@ class Extension extends \Twig_Extension
     /**
      * 获取指定类型的数据
      * $options 的用法：\n
-     * {'id': 123} 获取某一条id的数据\n
-     * {'last': 5, 'by': 'public_time'} 获取最后5条，以public_time排序。默认按 id\n
-     * {'per_page': 5, 'page': 2, 'by': 'public_time', 'order': 'desc'} 每页5条，第2页，以public_time倒序排列\n
+     * {'limit': 5, 'by': 'title'} 获取最后5条，以title倒序排。默认按 created倒序\n
+     * {'limit': 5, 'page': 2, 'by': 'title', 'order': 'asc'} 每页5条，第2页，以public_time倒序排列\n
      * {'where': "category = ? and ...", 'values': [3,...]} 设置查询条件\n
      *
      * @param $name 类型
@@ -75,20 +74,33 @@ class Extension extends \Twig_Extension
      */
     public function getList($name, $options = array())
     {
-        /**
-         * 如果 id 有值
-         */
-        if ($options['id'] > 0) {
-            return \R::load($name, $options['id']);
-        }
-
-        if ($options['last']) {
-            if ($options['by']) {
-
+        $select = sprintf('select * from %s', $name);
+        $o = $options;
+        if ($o['limit']) {
+            if ($o['page']) {
+                $limit = sprintf(' limit %u, %u',
+                    ($o['page'] - 1) * $o['limit'],
+                    $o['limit']);
+            } else {
+                $limit = sprintf(' limit %u', $o['limit']);
             }
         }
 
-        return \R::findAll($name);
+        if ($o['by']) {
+            $by = sprintf(' order by %s', $o['by']);
+        }else{
+            $by = ' order by created';
+        }
+
+        if ($o['order']) {
+            $order = ' ' . $o['order'];
+        }else{
+            $order = ' desc';
+        }
+
+        $sql = $select . $by . $order . $limit;
+        $rows = \R::getAll($sql);
+        return \R::convertToBeans('author',$rows);
     }
 
     /**

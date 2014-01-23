@@ -21,6 +21,7 @@ page:
     name: page
     title: 单页
     fields:
+        #自动生成id和created
         title:
             type: text
             label: 标题
@@ -100,6 +101,6 @@ tag:
             label: 名称
 
 #多级分类类型不用指定字段，自动包含字段：id, title（标题）, sort（排序）
-pagecategory:
-    name: pagecategory
-    title: 页面所属分类
+#pagecategory:
+#    name: pagecategory
+#    title: 页面所属分类

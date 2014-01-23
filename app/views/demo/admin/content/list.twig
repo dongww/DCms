@@ -1,0 +1,37 @@
+{% extends "demo/admin/base.twig" %}
+{% block main %}
+    {% set data = d_list(structure) %}
+    <h1>{{ app['structureConfig'][structure]['title'] }}列表</h1>
+    <table class="ui table segment compact small">
+        <thead>
+        <tr>
+            {% for field in app['structureConfig'][structure]['fields'] %}
+                {% if field.type not in ['textarea', 'html', 'image', 'imagelist', 'file', 'video', 'select'] %}
+                    <th>{{ field.label }}</th>
+                {% endif %}
+            {% endfor %}
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in data %}
+            <tr>
+                {% for name, field in app['structureConfig'][structure]['fields'] %}
+                    {% if field.type not in ['textarea', 'html', 'image', 'imagelist', 'file', 'video', 'select'] %}
+                        <td>{{ attribute(row, name) }}</td>
+                    {% endif %}
+                {% endfor %}
+                <td>{{ row.created }}</td>
+                <td>
+                    <div class="ui basic buttons small">
+                        <a class="ui button">详情</a>
+                        <a class="ui button">修改</a>
+                        <a class="ui button delete">删除</a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

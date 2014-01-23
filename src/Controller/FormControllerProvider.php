@@ -52,6 +52,8 @@ class FormControllerProvider implements ControllerProviderInterface
             $content = \R::load($contentName, $request->request->get('id'));
         } else {
             $content = \R::dispense($contentName);
+            $date = new \DateTime();
+            $content->created = $date->format('Y-m-d H:i:s');
         }
         /**
          * 基本字段

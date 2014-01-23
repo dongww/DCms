@@ -33,6 +33,8 @@ class AdminControllerProvider implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
 
         $controllers->get('', array($this, 'index'));
+        $controllers->get('/{structure}/list/{page}', array($this, 'listContent'))
+            ->value('page', 1);
         $controllers->get('/{structure}/edit', array($this, 'editContent'));
         $controllers->get('/{structure}/edit/{id}', array($this, 'editContent'));
         $controllers->get('/category/{name}', array($this, 'category'));
@@ -48,11 +50,19 @@ class AdminControllerProvider implements ControllerProviderInterface
         return $app['twig']->render('demo/admin/index.twig');
     }
 
+    public function listContent(Application $app, Request $request, $structure, $page)
+    {
+        return $app['twig']->render('demo/admin/content/list.twig', array(
+            'structure' =>  $structure,
+            'page'  =>  $page
+        ));
+    }
+
     public function editContent(Application $app, Request $request, $structure)
     {
         return $app['twig']->render('demo/admin/content/edit.twig', array(
-            'id'    =>  $request->get('id'),
-            'structure' =>  $structure
+            'id' => $request->get('id'),
+            'structure' => $structure
         ));
     }
 

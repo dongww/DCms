@@ -25,16 +25,19 @@
             <i class="home icon"></i>
             首页
         </a>
-
+        {% for structure in app['structureConfig'] %}
         <div class="header item">
             <i class="user icon"></i>
-            新闻管理
+            {{ structure.title }}管理
         </div>
+
         <div class="item">
             <div class="menu">
-                <a class="item" href="#">新闻列表</a>
+                    <a class="item" href="/admin/{{ structure.name }}/list">{{ structure.title }}列表</a>
+                    <a class="item" href="/admin/{{ structure.name }}/edit">添加{{ structure.title }}</a>
             </div>
         </div>
+        {% endfor %}
         </div>
     </div>
 {% endblock %}
