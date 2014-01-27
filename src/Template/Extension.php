@@ -42,7 +42,7 @@ class Extension extends \Twig_Extension
             new \Twig_SimpleFunction('d_parent', array($this, 'getParent')),
             new \Twig_SimpleFunction('d_shared', array($this, 'getShared')),
             new \Twig_SimpleFunction('d_own', array($this, 'getOwn')),
-            new \Twig_SimpleFunction('d_image', array($this, 'getImage')),
+            new \Twig_SimpleFunction('d_image', array($this, 'getImageUrl')),
             new \Twig_SimpleFunction('d_imagelist', array($this, 'getImageList')),
             new \Twig_SimpleFunction('d_list', array($this, 'getList')),
             new \Twig_SimpleFunction('d_category', array($this, 'getCategory')),
@@ -66,6 +66,16 @@ class Extension extends \Twig_Extension
         ));
     }
 
+    /**
+     * 分页扩展函数
+     *
+     * @param $path
+     * @param $name
+     * @param int $page
+     * @param int $limit
+     * @param string $tplFile
+     * @return mixed
+     */
     public function getPaging($path, $name, $page = 1, $limit = 10, $tplFile = 'demo/admin/content/paging.twig')
     {
         $count = \R::count($name);
@@ -84,8 +94,8 @@ class Extension extends \Twig_Extension
      * {'limit': 5, 'page': 2, 'by': 'title', 'order': 'asc'} 每页5条，第2页，以public_time倒序排列\n
      * {'where': "category = ? and ...", 'values': [3,...]} 设置查询条件\n
      *
-     * @param $name 类型
-     * @param $options 选项
+     * @param $name string 类型
+     * @param $options array 选项
      * @return array
      */
     public function getList($name, $options = array())
@@ -142,19 +152,41 @@ class Extension extends \Twig_Extension
         return $content->$parentName;
     }
 
+    /**
+     * 获得某个内容m2m的关联内容，例如某个商品的所有个颜色（多个）
+     *
+     * @param $content
+     * @param $sharedName
+     * @return mixed
+     */
     public function getShared($content, $sharedName)
     {
         $name = 'shared' . ucwords($sharedName);
         return $content->$name;
     }
 
+    /**
+     * 获得某个内容o2m的关联内容，例如某个商品的所有图片（多张）
+     *
+     * @param $content
+     * @param $ownName
+     * @return mixed
+     */
     public function getOwn($content, $ownName)
     {
         $name = 'own' . ucwords($ownName);
         return $content->$name;
     }
 
-    public function getImage($content, $field, $size = null)
+    /**
+     * 获取图片网址
+     *
+     * @param $content
+     * @param $field
+     * @param null $size
+     * @return string
+     */
+    public function getImageUrl($content, $field, $size = null)
     {
         $fileName = $content->$field;
         $img = new \Data\Image();
@@ -162,6 +194,14 @@ class Extension extends \Twig_Extension
         return $img->getUrl($fileName, $size[0] . '_' . $size[1] . '_');
     }
 
+    /**
+     * 获取图片列表数据
+     *
+     * @param $content
+     * @param $imageList
+     * @param null $size
+     * @return array
+     */
     public function getImageList($content, $imageList, $size = null)
     {
         $list = $this->getOwn($content, $imageList);

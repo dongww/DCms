@@ -36,6 +36,11 @@ class Config
         );
     }
 
+    /**
+     * 获取主配置
+     *
+     * @return array
+     */
     public function getMainConfig()
     {
         if (!$this->values['main']) {
@@ -45,6 +50,8 @@ class Config
     }
 
     /**
+     * 获取内容结构配置
+     *
      * @return array
      */
     public function getStructureConfig()

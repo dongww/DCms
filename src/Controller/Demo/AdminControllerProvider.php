@@ -46,11 +46,27 @@ class AdminControllerProvider implements ControllerProviderInterface
         return $controllers;
     }
 
+    /**
+     * 管理后台首页
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return mixed
+     */
     public function index(Application $app, Request $request)
     {
         return $app['twig']->render('demo/admin/index.twig');
     }
 
+    /**
+     * 内容列表
+     *
+     * @param Application $app
+     * @param Request $request
+     * @param $structure string 内容结构名称
+     * @param $page integer 页码
+     * @return mixed
+     */
     public function listContent(Application $app, Request $request, $structure, $page)
     {
         return $app['twig']->render('demo/admin/content/list.twig', array(
@@ -59,6 +75,15 @@ class AdminControllerProvider implements ControllerProviderInterface
         ));
     }
 
+    /**
+     * 单项内容页面
+     *
+     * @param Application $app
+     * @param Request $request
+     * @param $structure string 内容结构名称
+     * @param $id integer 内容id
+     * @return mixed
+     */
     public function getContent(Application $app, Request $request, $structure, $id)
     {
         return $app['twig']->render('demo/admin/content/content.twig', array(
@@ -68,6 +93,14 @@ class AdminControllerProvider implements ControllerProviderInterface
         ));
     }
 
+    /**
+     * 编辑内容页面
+     *
+     * @param Application $app
+     * @param Request $request
+     * @param $structure string 内容结构名称
+     * @return mixed
+     */
     public function editContent(Application $app, Request $request, $structure)
     {
         return $app['twig']->render('demo/admin/content/edit.twig', array(
@@ -76,6 +109,14 @@ class AdminControllerProvider implements ControllerProviderInterface
         ));
     }
 
+    /**
+     * 多级分类管理页面
+     *
+     * @param Application $app
+     * @param Request $request
+     * @param $name
+     * @return mixed
+     */
     public function category(Application $app, Request $request, $name)
     {
         return $app['twig']->render('demo/admin/category.twig', array(
@@ -83,6 +124,13 @@ class AdminControllerProvider implements ControllerProviderInterface
         ));
     }
 
+    /**
+     * 通过 ajax 添加分类项
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
     public function addCategoryJson(Application $app, Request $request)
     {
         $success = false;
@@ -120,6 +168,13 @@ class AdminControllerProvider implements ControllerProviderInterface
         ));
     }
 
+    /**
+     * 重命名分类项
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
     public function renameCategoryJson(Application $app, Request $request)
     {
         $success = false;
@@ -144,6 +199,13 @@ class AdminControllerProvider implements ControllerProviderInterface
         ));
     }
 
+    /**
+     * 移动分类项
+     *
+     * @param Application $app
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
     public function moveCategoryJson(Application $app, Request $request)
     {
         $success = false;
@@ -168,6 +230,4 @@ class AdminControllerProvider implements ControllerProviderInterface
             'error' => $errorMessages
         ));
     }
-
-
 } 

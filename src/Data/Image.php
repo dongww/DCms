@@ -10,6 +10,12 @@ namespace Data;
 
 class Image
 {
+    /**
+     * 上传一张图片
+     *
+     * @param $file
+     * @return string
+     */
     public function uploadFile($file)
     {
         $toPath = __DIR__ . '/../../web/upload/';
@@ -19,13 +25,19 @@ class Image
         return $filename;
     }
 
+    /**
+     * 上传多张图片
+     *
+     * @param $files
+     * @return array
+     */
     public function uploadFiles($files)
     {
         $fileNames = array();
         foreach ($files as $file) {
-            if($file){
+            if ($file) {
                 $fileNames[] = $this->uploadFile($file);
-            }else{
+            } else {
                 continue;
             }
 
@@ -34,11 +46,24 @@ class Image
         return $fileNames;
     }
 
+    /**
+     * 获取图片的文件路径
+     *
+     * @param $fileName
+     * @return string
+     */
     public function getPath($fileName)
     {
-        return __DIR__ . '/../../web/upload/' . $fileName;
+        return realpath(__DIR__ . '/../../web/upload/' . $fileName);
     }
 
+    /**
+     * 获取图片链接
+     *
+     * @param $fileName
+     * @param string $pre
+     * @return string
+     */
     public function getUrl($fileName, $pre = '')
     {
         return '/upload/' . $pre . $fileName;

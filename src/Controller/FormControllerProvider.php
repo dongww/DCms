@@ -146,9 +146,17 @@ class FormControllerProvider implements ControllerProviderInterface
         \R::store($content);
     }
 
-    public function deleteContent(Application $app, Request $request, $content, $id)
+    /**
+     * 删除内容项
+     *
+     * @param Application $app
+     * @param Request $request
+     * @param $contentName string 内容结构名称
+     * @param $id
+     */
+    public function deleteContent(Application $app, Request $request, $contentName, $id)
     {
-        $bean = \R::load($content, $id);
+        $bean = \R::load($contentName, $id);
         \R::trash( $bean );
     }
 
@@ -175,6 +183,13 @@ class FormControllerProvider implements ControllerProviderInterface
         ));
     }
 
+    /**
+     * 处理从 ckEditor 编辑器上传的图片
+     *
+     * @param Request $request
+     * @param Application $app
+     * @return string
+     */
     public function ckUpload(Request $request, Application $app)
     {
         $file = new \Data\Image();
