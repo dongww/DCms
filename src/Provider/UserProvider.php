@@ -1,5 +1,5 @@
 <?php
-namespace D\Provider;
+namespace Provider\Provider;
 
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -7,6 +7,12 @@ use Core\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
+/**
+ * 处理用户的 Silex Provider
+ *
+ * Class UserProvider
+ * @package Provider\Provider
+ */
 class UserProvider implements UserProviderInterface
 {
     public function __construct()

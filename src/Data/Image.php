@@ -7,7 +7,12 @@
 
 namespace Data;
 
-
+/**
+ * 处理图片上传的类
+ *
+ * Class Image
+ * @package Data
+ */
 class Image
 {
     /**

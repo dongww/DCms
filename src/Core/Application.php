@@ -12,6 +12,12 @@ namespace Core;
 
 use Silex\Application as baseApp;
 
+/**
+ * 定制的主程序类，继承自 Silex\Application
+ *
+ * Class Application
+ * @package Core
+ */
 class Application extends baseApp
 {
     public function __construct()

@@ -7,7 +7,12 @@
 
 namespace Data;
 
-
+/**
+ * 处理多级目录的类
+ *
+ * Class Category
+ * @package Data
+ */
 class Category
 {
     protected $category;

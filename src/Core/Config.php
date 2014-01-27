@@ -9,6 +9,12 @@ namespace Core;
 
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * 配置文件类，负责从配置文件读取配置
+ *
+ * Class Config
+ * @package Core
+ */
 class Config
 {
     /**

@@ -11,6 +11,12 @@ use Silex\ServiceProviderInterface;
 use Silex\Application;
 use Core\Config;
 
+/**
+ * 处理配置的 Silex Provider
+ *
+ * Class ConfigProvider
+ * @package Provider
+ */
 class ConfigProvider implements ServiceProviderInterface
 {
     public function register(Application $app)

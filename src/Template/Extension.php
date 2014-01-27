@@ -10,6 +10,12 @@ namespace Template;
 use Core\Application;
 use Data\Category;
 
+/**
+ * 自定义扩展类，提供一些便捷的 Twig 标签
+ *
+ * Class Extension
+ * @package Template
+ */
 class Extension extends \Twig_Extension
 {
     protected $app;
