@@ -88,9 +88,9 @@ class:
     name: class
     title: 单页分类
     fields:
-        title:
+        name:
             type: text
-            label: 标题
+            label: 名称
 
 tag:
     name: tag

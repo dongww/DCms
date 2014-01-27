@@ -44,7 +44,7 @@
 
                     <div class="menu">
                         {% for item in d_list(name) %}
-                            <div class="item" data-value="{{ item.id }}">{{ item.title }}</div>
+                            <div class="item" data-value="{{ item.id }}">{{ item.name }}</div>
                         {% endfor %}
                     </div>
                 </div>
@@ -70,28 +70,29 @@
     {% for name, cat in form.category %}
         <div class="field">
             <label>{{ cat.label }}</label>
-            <a class="ui labeled icon submit button small" href="/admin/category/{{ name }}" target="_blank"><i class="sitemap icon"></i>分类管理</a>
+            <a class="ui labeled icon submit button small" href="/admin/category/{{ name }}" target="_blank"><i
+                        class="sitemap icon"></i>分类管理</a>
             {% if cat.mult %}
                 <a class="ui red label">
                     提示：按住Ctrl键可多选
-            </a>{% endif %}
+                </a>{% endif %}
             {{ dform.category(form, name, cat.mult, d_shared(data, name)) }}
         </div>
     {% endfor %}
     <button class="ui red submit button">确定提交</button>
 </form>
 <style>
-    .ui.corner.label{
+    .ui.corner.label {
         z-index: 1;
     }
 </style>
 <script>
     $('.ui.radio.checkbox').checkbox();
     $('.date').datepicker($.datepicker.regional[ "zh-CN" ]);
-    $('.image a.delete').on('click', function(){
-        if(confirm('确定删除？')){
+    $('.image a.delete').on('click', function () {
+        if (confirm('确定删除？')) {
             var $this = $(this);
-            $.get('/form/imagelist/delete/'+ $(this).attr('content') + '/' + $(this).attr('value'), function (data) {
+            $.get('/form/imagelist/delete/' + $(this).attr('content') + '/' + $(this).attr('value'), function (data) {
                 if (data.success) {
                     alert('操作成功');
                     $this.parent().remove();
@@ -101,7 +102,7 @@
 
                 return false;
             });
-        }else{
+        } else {
             return false;
         }
     });

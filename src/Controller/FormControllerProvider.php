@@ -34,6 +34,7 @@ class FormControllerProvider implements ControllerProviderInterface
         $controllers->post('/ck_upload', array($this, 'ckUpload'))
             ->bind('ck_upload');
         $controllers->get('/imagelist/delete/{content}/{id}', array($this, 'deleteImagelistJson'));
+        $controllers->get('/delete/{content}/{id}', array($this, 'deleteContent'));
 
         return $controllers;
     }
@@ -143,6 +144,12 @@ class FormControllerProvider implements ControllerProviderInterface
         }
 
         \R::store($content);
+    }
+
+    public function deleteContent(Application $app, Request $request, $content, $id)
+    {
+        $bean = \R::load($content, $id);
+        \R::trash( $bean );
     }
 
     /**

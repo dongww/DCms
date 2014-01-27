@@ -42,6 +42,7 @@ class Extension extends \Twig_Extension
             new \Twig_SimpleFunction('d_parent', array($this, 'getParent')),
             new \Twig_SimpleFunction('d_shared', array($this, 'getShared')),
             new \Twig_SimpleFunction('d_own', array($this, 'getOwn')),
+            new \Twig_SimpleFunction('d_image', array($this, 'getImage')),
             new \Twig_SimpleFunction('d_imagelist', array($this, 'getImageList')),
             new \Twig_SimpleFunction('d_list', array($this, 'getList')),
             new \Twig_SimpleFunction('d_category', array($this, 'getCategory')),
@@ -61,7 +62,7 @@ class Extension extends \Twig_Extension
         return $this->app['twig']->render($tplFile, array(
             'form' => $this->app['structureConfig'][$name],
             'data' => $data,
-            'path'   => $_SERVER["PHP_SELF"]
+            'path' => $_SERVER["PHP_SELF"]
         ));
     }
 
@@ -70,9 +71,9 @@ class Extension extends \Twig_Extension
         $count = \R::count($name);
 
         return $this->app['twig']->render($tplFile, array(
-            'page'  =>  $page,
-            'pages' =>  ceil($count / $limit),
-            'path'  =>  $path
+            'page' => $page,
+            'pages' => ceil($count / $limit),
+            'path' => $path
         ));
     }
 
@@ -151,6 +152,14 @@ class Extension extends \Twig_Extension
     {
         $name = 'own' . ucwords($ownName);
         return $content->$name;
+    }
+
+    public function getImage($content, $field, $size = null)
+    {
+        $fileName = $content->$field;
+        $img = new \Data\Image();
+        $size = $this->app['structureConfig'][$content->getMeta('type')]['fields'][$field]['size'][$size];
+        return $img->getUrl($fileName, $size[0] . '_' . $size[1] . '_');
     }
 
     public function getImageList($content, $imageList, $size = null)

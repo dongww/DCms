@@ -1,0 +1,69 @@
+{% extends "demo/admin/base.twig" %}
+{% set content = d_content(structure_name, id) %}
+{% block main %}
+    <h1>{{ structure.title }}详情</h1>
+    <a class="ui green button" href="/admin/{{ structure_name }}/edit/{{ id }}">
+        修改内容
+    </a>
+    <a class="ui primary button delete" href="/form/delete/{{ structure_name }}/{{ id }}">
+        删除
+    </a>
+    <table class="ui table segment">
+        {% for name, field in structure.fields %}
+            <tr>
+                <th style="width: 100px">{{ field.label }}</th>
+                <td>
+                    {% if field.type == 'image' %}
+                        <img src="{{ d_image(content, name, 'small') }}">
+                    {% elseif field.type == 'imagelist' %}
+                        {% set list = d_imagelist(content, name, 'small') %}
+                        {% for img in list %}
+                            <img src="{{ img.url }}">
+                        {% endfor %}
+                    {% elseif field.type == 'html' %}
+                        {{ attribute(content, name)|raw }}
+                    {% else %}
+                        {{ attribute(content, name) }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        {% for name, rel in structure.relations %}
+            <tr>
+                <th>{{ rel.label }}</th>
+                <td>
+                    {% if rel.type == 'm2o' %}
+                        {% if rel.display == 'select' %}
+                            {% set p = d_parent(content, name) %}
+                            {{ p.name }}
+                        {% endif %}
+                    {% elseif rel.type == 'm2m' %}
+                        {% if rel.display == 'checkboxes' %}
+                            {% for data in d_shared(content, name) %}
+                                {{ data.name }}，
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        {% for name, cat in structure.category %}
+            <tr>
+                <th>{{ cat.label }}</th>
+                <td>
+                    {% for data in d_shared(content, name) %}
+                        {{ data.title }}，
+                    {% endfor %}
+                </td>
+            </tr>
+
+        {% endfor %}
+    </table>
+    <script>
+        $('a.delete').on('click', function () {
+            if (!confirm('确定删除？')) {
+                return false;
+            }
+        });
+    </script>
+{% endblock %}

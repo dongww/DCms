@@ -1,6 +1,6 @@
 {% extends "demo/admin/base.twig" %}
 {% block main %}
-    {% set data = d_list(structure, {'limit': 3, 'page': page}) %}
+    {% set data = d_list(structure, {'limit': 10, 'page': page}) %}
     <h1>{{ app['structureConfig'][structure]['title'] }}列表</h1>
     <table class="ui table segment compact small">
         <thead>
@@ -25,14 +25,21 @@
                 <td>{{ row.created }}</td>
                 <td>
                     <div class="ui basic buttons small">
-                        <a class="ui button">详情</a>
-                        <a class="ui button">修改</a>
-                        <a class="ui button delete">删除</a>
+                        <a href="/admin/{{ structure }}/content/{{ row.id }}" class="ui button">详情</a>
+                        <a href="/admin/{{ structure }}/edit/{{ row.id }}" class="ui button">修改</a>
+                        <a href="/form/delete/{{ structure }}/{{ row.id }}" class="ui button delete">删除</a>
                     </div>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    {{ d_paging('/admin/' ~ structure ~ '/list', structure, page, 3) }}
+    {{ d_paging('/admin/' ~ structure ~ '/list', structure, page, 10) }}
+    <script>
+        $('a.delete').on('click', function () {
+            if (!confirm('确定删除？')) {
+                return false;
+            }
+        });
+    </script>
 {% endblock %}
