@@ -26,8 +26,8 @@ class Application extends baseApp
 
         //error_reporting(E_ALL ^ E_NOTICE);
 
-        $this['appPath'] = __DIR__ . '/../../app';
-        $this['dataPath'] = __DIR__ . '/../../data';
+        $this['appPath'] = __DIR__ . '/../../../app';
+        $this['dataPath'] = __DIR__ . '/../../../data';
 
         $this->regProviders();
 
