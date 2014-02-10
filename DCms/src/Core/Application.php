@@ -11,6 +11,8 @@
 namespace Core;
 
 use Silex\Application as baseApp;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Routing\Loader\YamlFileLoader;
 
 /**
  * 定制的主程序类，继承自 Silex\Application
@@ -28,6 +30,7 @@ class Application extends baseApp
 
         $this['appPath'] = $appPath;
         $this['dataPath'] = $this['appPath'] . '/data';
+        $this['configPath'] = $this['appPath'] . '/config';
 
         $this->regProviders();
 
@@ -71,7 +74,7 @@ class Application extends baseApp
     public function initConfig()
     {
         $this->register(new \Provider\ConfigProvider(), array(
-            'config.path' => $this['appPath'] . '/config'
+            'config.path' => $this['configPath'],
         ));
 
         /**
@@ -128,6 +131,10 @@ class Application extends baseApp
      */
     public function initController()
     {
+        $locator = new FileLocator($this['configPath']);
+        $loader = new YamlFileLoader($locator);
+        $this['routes'] = $loader->load('routes.yml');
+
         $this->mount('/form', new \Controller\FormControllerProvider());
         $this->mount('/admin', new \Controller\Demo\AdminControllerProvider());
     }
