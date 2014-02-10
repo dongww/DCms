@@ -20,14 +20,14 @@ use Silex\Application as baseApp;
  */
 class Application extends baseApp
 {
-    public function __construct()
+    public function __construct($appPath = '../app')
     {
         parent::__construct();
 
         //error_reporting(E_ALL ^ E_NOTICE);
 
-        $this['appPath'] = __DIR__ . '/../../../app';
-        $this['dataPath'] = __DIR__ . '/../../../data';
+        $this['appPath'] = $appPath;
+        $this['dataPath'] = $this['appPath'] . '/data';
 
         $this->regProviders();
 
