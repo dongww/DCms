@@ -144,7 +144,7 @@ class FormControllerProvider implements ControllerProviderInterface
         }
 
         \R::store($content);
-        return $this->redirect($_SERVER[HTTP_REFERER]);
+        return self::redirect($_SERVER[HTTP_REFERER]);
     }
 
     /**
@@ -159,7 +159,7 @@ class FormControllerProvider implements ControllerProviderInterface
     {
         $bean = \R::load($content, $id);
         \R::trash( $bean );
-        return $this->redirect($_SERVER[HTTP_REFERER]);
+        return self::redirect($_SERVER[HTTP_REFERER]);
     }
 
     /**
@@ -201,7 +201,7 @@ class FormControllerProvider implements ControllerProviderInterface
         return "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($funcNum, '$url', '');</script>";
     }
 
-    public function redirect($url, $info = '操作成功！')
+    public static function redirect($url, $info = '操作成功！')
     {
         $out = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
             <script>alert("' . $info . '");window.location.href = "' . $url . '";</script>';
