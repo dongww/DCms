@@ -23,7 +23,7 @@ class Image
      */
     public function uploadFile($file)
     {
-        $toPath = __DIR__ . '/../../web/upload/';
+        $toPath = __DIR__ . '/../../../web/upload/';
         $filename = uniqid() . '.' . $file->guessClientExtension();
         $file->move($toPath, $filename);
 
@@ -59,7 +59,7 @@ class Image
      */
     public function getPath($fileName)
     {
-        return realpath(__DIR__ . '/../../web/upload/' . $fileName);
+        return realpath(__DIR__ . '/../../../web/upload/' . $fileName);
     }
 
     /**

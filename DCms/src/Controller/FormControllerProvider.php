@@ -127,7 +127,7 @@ class FormControllerProvider implements ControllerProviderInterface
         /**
          * 多级分类
          */
-        if ($app['structureConfig'][$contentName]['relations']) {
+        if ($app['structureConfig'][$contentName]['category']) {
             foreach ($app['structureConfig'][$contentName]['category'] as $catName => $cat) {
                 if ($request->request->get($catName)) {
                     $arr = array();
@@ -144,6 +144,7 @@ class FormControllerProvider implements ControllerProviderInterface
         }
 
         \R::store($content);
+        return $this->redirect($_SERVER[HTTP_REFERER]);
     }
 
     /**
@@ -154,10 +155,11 @@ class FormControllerProvider implements ControllerProviderInterface
      * @param $contentName string 内容结构名称
      * @param $id
      */
-    public function deleteContent(Application $app, Request $request, $contentName, $id)
+    public function deleteContent(Application $app, Request $request, $content, $id)
     {
-        $bean = \R::load($contentName, $id);
+        $bean = \R::load($content, $id);
         \R::trash( $bean );
+        return $this->redirect($_SERVER[HTTP_REFERER]);
     }
 
     /**
@@ -197,5 +199,12 @@ class FormControllerProvider implements ControllerProviderInterface
         $funcNum = $_GET['CKEditorFuncNum'];
 
         return "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($funcNum, '$url', '');</script>";
+    }
+
+    public function redirect($url, $info = '操作成功！')
+    {
+        $out = '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <script>alert("' . $info . '");window.location.href = "' . $url . '";</script>';
+        return $out;
     }
 } 
