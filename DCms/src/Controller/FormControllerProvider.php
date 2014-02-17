@@ -144,7 +144,7 @@ class FormControllerProvider implements ControllerProviderInterface
         }
 
         \R::store($content);
-        return self::redirect($_SERVER[HTTP_REFERER]);
+        return self::redirect($request->server->get('HTTP_REFERER'));
     }
 
     /**
@@ -159,7 +159,7 @@ class FormControllerProvider implements ControllerProviderInterface
     {
         $bean = \R::load($content, $id);
         \R::trash( $bean );
-        return self::redirect($_SERVER[HTTP_REFERER]);
+        return self::redirect($request->server->get('HTTP_REFERER'));
     }
 
     /**
