@@ -22,15 +22,17 @@ use Symfony\Component\Routing\Loader\YamlFileLoader;
  */
 class Application extends baseApp
 {
-    public function __construct($appPath = '../app')
+    public function __construct($rootPath = '..')
     {
         parent::__construct();
 
         //error_reporting(E_ALL ^ E_NOTICE);
 
-        $this['appPath'] = $appPath;
+        $this['appPath'] = $rootPath . '/app';
         $this['dataPath'] = $this['appPath'] . '/data';
         $this['configPath'] = $this['appPath'] . '/config';
+        $this['webRoot'] = $rootPath . '/web';
+        $this['uploadPath'] = $this['webRoot'] . '/upload/';
 
         $this->regProviders();
 

@@ -21,9 +21,8 @@ class Image
      * @param $file
      * @return string
      */
-    public function uploadFile($file)
+    public function uploadFile($file, $toPath)
     {
-        $toPath = __DIR__ . '/../../../web/upload/';
         $filename = uniqid() . '.' . $file->guessClientExtension();
         $file->move($toPath, $filename);
 
@@ -36,12 +35,12 @@ class Image
      * @param $files
      * @return array
      */
-    public function uploadFiles($files)
+    public function uploadFiles($files, $toPath)
     {
         $fileNames = array();
         foreach ($files as $file) {
             if ($file) {
-                $fileNames[] = $this->uploadFile($file);
+                $fileNames[] = $this->uploadFile($file, $toPath);
             } else {
                 continue;
             }
@@ -57,9 +56,9 @@ class Image
      * @param $fileName
      * @return string
      */
-    public function getPath($fileName)
+    public function getPath($fileName, $uploadPath)
     {
-        return realpath(__DIR__ . '/../../../web/upload/' . $fileName);
+        return realpath($uploadPath . $fileName);
     }
 
     /**

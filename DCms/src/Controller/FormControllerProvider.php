@@ -64,15 +64,15 @@ class FormControllerProvider implements ControllerProviderInterface
                 case 'image':
                     if ($request->files->get($fieldName)) {
                         $file = new \Data\Image();
-                        $fileName = $file->uploadFile($request->files->get($fieldName));
+                        $fileName = $file->uploadFile($request->files->get($fieldName), $app['uploadPath']);
                         $content->$fieldName = $fileName;
 
-                        $filePath = $file->getPath($fileName);
+                        $filePath = $file->getPath($fileName, $app['uploadPath']);
                         foreach ($field['size'] as $s) {
                             $img = Image::make($filePath);
                             $img->resize($s[0], $s[1], true);
                             $imgName = $s[0] . '_' . $s[1] . '_' . $fileName;
-                            $img->save($file->getPath($imgName));
+                            $img->save($file->getPath($imgName, $app['uploadPath']));
                         }
                     }
                     break;
@@ -80,18 +80,18 @@ class FormControllerProvider implements ControllerProviderInterface
                     if ($request->files->get($fieldName)) {
                         $file = new \Data\Image();
 
-                        $fileNames = $file->uploadFiles($request->files->get($fieldName));
+                        $fileNames = $file->uploadFiles($request->files->get($fieldName), $app['uploadPath']);
                         $imgTableName = 'own' . ucwords($fieldName);
                         foreach ($fileNames as $filename) {
                             $img = \R::dispense($fieldName);
                             $img->filename = $filename;
                             array_push($content->$imgTableName, $img);
-                            $filePath = $file->getPath($filename);
+                            $filePath = $file->getPath($filename, $app['uploadPath']);
                             foreach ($field['size'] as $s) {
                                 $img = Image::make($filePath);
                                 $img->resize($s[0], $s[1], true);
                                 $imgName = $s[0] . '_' . $s[1] . '_' . $filename;
-                                $img->save($file->getPath($imgName));
+                                $img->save($file->getPath($imgName, $app['uploadPath']));
                             }
                         }
                     }
@@ -195,7 +195,7 @@ class FormControllerProvider implements ControllerProviderInterface
     public function ckUpload(Request $request, Application $app)
     {
         $file = new \Data\Image();
-        $url = $file->getUrl($file->uploadFile($request->files->get('upload')));
+        $url = $file->getUrl($file->uploadFile($request->files->get('upload'), $app['uploadPath']));
         $funcNum = $_GET['CKEditorFuncNum'];
 
         return "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($funcNum, '$url', '');</script>";
