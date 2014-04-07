@@ -27,6 +27,7 @@ class FormControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
+        /** @var \Silex\ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
         $controllers->post('/edit', array($this, 'edit'))
@@ -45,6 +46,7 @@ class FormControllerProvider implements ControllerProviderInterface
      *
      * @param Application $app
      * @param Request $request
+     * @return string
      */
     public function edit(Application $app, Request $request)
     {
@@ -150,12 +152,12 @@ class FormControllerProvider implements ControllerProviderInterface
     /**
      * 删除内容项
      *
-     * @param Application $app
      * @param Request $request
-     * @param $contentName string 内容结构名称
+     * @param string $content 内容结构名称
      * @param $id
+     * @return string
      */
-    public function deleteContent(Application $app, Request $request, $content, $id)
+    public function deleteContent(Request $request, $content, $id)
     {
         $bean = \R::load($content, $id);
         \R::trash( $bean );
@@ -166,14 +168,12 @@ class FormControllerProvider implements ControllerProviderInterface
      * 删除imagelist中的某一个图片
      *
      * @param Application $app
-     * @param Request $request
      * @param $content
      * @param $id
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function deleteImagelistJson(Application $app, Request $request, $content, $id)
+    public function deleteImagelistJson(Application $app, $content, $id)
     {
-        $success = false;
         $errorMessages = array();
 
         $bean = \R::load($content, $id);
@@ -196,9 +196,9 @@ class FormControllerProvider implements ControllerProviderInterface
     {
         $file = new \Data\Image();
         $url = $file->getUrl($file->uploadFile($request->files->get('upload'), $app['uploadPath']));
-        $funcNum = $_GET['CKEditorFuncNum'];
+        $funcNum = $request->get('CKEditorFuncNum');
 
-        return "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($funcNum, '$url', '');</script>";
+        return sprintf("<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction(%s, '%s', '');</script>", $funcNum, $url);
     }
 
     public static function redirect($url, $info = '操作成功！')

@@ -9,6 +9,7 @@
 namespace Controller\Demo;
 
 use Silex\Application;
+use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\ControllerProviderInterface;
 use Data\Category;
@@ -30,6 +31,7 @@ class AdminControllerProvider implements ControllerProviderInterface
      */
     public function connect(Application $app)
     {
+        /** @var ControllerCollection $controllers */
         $controllers = $app['controllers_factory'];
 
         $controllers->get('', array($this, 'index'));
@@ -50,10 +52,9 @@ class AdminControllerProvider implements ControllerProviderInterface
      * 管理后台首页
      *
      * @param Application $app
-     * @param Request $request
      * @return mixed
      */
-    public function index(Application $app, Request $request)
+    public function index(Application $app)
     {
         return $app['twig']->render('demo/admin/index.twig');
     }
@@ -62,12 +63,11 @@ class AdminControllerProvider implements ControllerProviderInterface
      * 内容列表
      *
      * @param Application $app
-     * @param Request $request
      * @param $structure string 内容结构名称
      * @param $page integer 页码
      * @return mixed
      */
-    public function listContent(Application $app, Request $request, $structure, $page)
+    public function listContent(Application $app, $structure, $page)
     {
         return $app['twig']->render('demo/admin/content/list.twig', array(
             'structure' =>  $structure,
@@ -79,12 +79,11 @@ class AdminControllerProvider implements ControllerProviderInterface
      * 单项内容页面
      *
      * @param Application $app
-     * @param Request $request
      * @param $structure string 内容结构名称
      * @param $id integer 内容id
      * @return mixed
      */
-    public function getContent(Application $app, Request $request, $structure, $id)
+    public function getContent(Application $app, $structure, $id)
     {
         return $app['twig']->render('demo/admin/content/content.twig', array(
             'structure' =>  $app['structureConfig'][$structure],
@@ -113,11 +112,10 @@ class AdminControllerProvider implements ControllerProviderInterface
      * 多级分类管理页面
      *
      * @param Application $app
-     * @param Request $request
      * @param $name
      * @return mixed
      */
-    public function category(Application $app, Request $request, $name)
+    public function category(Application $app, Request $name)
     {
         return $app['twig']->render('demo/admin/category.twig', array(
             'name' => $name

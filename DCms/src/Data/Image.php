@@ -7,6 +7,7 @@
 
 namespace Data;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * 处理图片上传的类
  *
@@ -19,9 +20,10 @@ class Image
      * 上传一张图片
      *
      * @param $file
+     * @param $toPath
      * @return string
      */
-    public function uploadFile($file, $toPath)
+    public function uploadFile(UploadedFile $file, $toPath)
     {
         $filename = uniqid() . '.' . $file->guessClientExtension();
         $file->move($toPath, $filename);
@@ -32,7 +34,8 @@ class Image
     /**
      * 上传多张图片
      *
-     * @param $files
+     * @param UploadedFile[] $files
+     * @param $toPath
      * @return array
      */
     public function uploadFiles($files, $toPath)
@@ -53,7 +56,8 @@ class Image
     /**
      * 获取图片的文件路径
      *
-     * @param $fileName
+     * @param string $fileName
+     * @param string $uploadPath
      * @return string
      */
     public function getPath($fileName, $uploadPath)
